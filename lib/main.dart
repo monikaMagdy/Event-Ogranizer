@@ -2,38 +2,57 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class LoginForm extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Home Page",
+      // theme: ThemeData.dark(),
+      home: SignUpForm(),
+    );
+  }
+}
+
+class LoginForm extends StatefulWidget {
+  @override
+  _LoginForm createState() => _LoginForm();
+}
+
+class _LoginForm extends State<LoginForm> {
+  var data;
   @override
   Widget build(BuildContext context) {
     Widget fromText = Container(
         padding: const EdgeInsets.all(50),
-        child: Row(
-          children: [
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Username"),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Email - Username',
-                    //errorText: 'Error Text',
+        child: SingleChildScrollView(
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Username"),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Email - Username',
+                      //errorText: 'Error Text',
+                    ),
                   ),
-                ),
-                Text("Password"),
-                TextField(
-                  obscureText: true,
-                  obscuringCharacter: "*",
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Password',
-                    errorText: 'Error Text',
+                  Text("Password"),
+                  TextField(
+                    obscureText: true,
+                    obscuringCharacter: "*",
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Password',
+                      errorText: 'Error Text',
+                    ),
                   ),
-                ),
-              ],
-            )),
-          ],
+                ],
+              )),
+            ],
+          ),
         ));
 
     Color color = Theme.of(context).primaryColor;
@@ -50,9 +69,10 @@ class LoginForm extends StatelessWidget {
 
     return MaterialApp(
       title: "Event Ogranizer",
+      theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Events"),
+          title: Text("Events Organizer"),
         ),
         body: ListView(
           children: [fromText, buttonSection],
@@ -87,136 +107,144 @@ class LoginForm extends StatelessWidget {
     );
   }
 }
-//##################################################################################
 
-class SingUpForm extends StatelessWidget {
+//##################################################################################
+class SignUpForm extends StatefulWidget {
+  @override
+  _SignUpForm createState() => _SignUpForm();
+}
+
+class _SignUpForm extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     Widget form = Container(
         padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("First Name"),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "FirstName",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("First Name"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "FirstName",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Last Name"),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "LastName",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+              Text("Last Name"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "LastName",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Email"),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Email",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+              Text("Email"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Email",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Password"),
-            TextFormField(
-              obscureText: true,
-              obscuringCharacter: "*",
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Password",
-                counterText: '0 characters',
+              Text("Password"),
+              TextFormField(
+                obscureText: true,
+                obscuringCharacter: "*",
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Password",
+                  counterText: '0 characters',
 
-                //errorText: 'Error Text',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Confirm Password"),
-            TextFormField(
-              obscureText: true,
-              obscuringCharacter: "*",
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Confrim Password",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+              Text("Confirm Password"),
+              TextFormField(
+                obscureText: true,
+                obscuringCharacter: "*",
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Confrim Password",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Socail ID"),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Social ID",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+              Text("Socail ID"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Social ID",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Text("Phone Number"),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "PhoneNumber",
-                counterText: '0 characters',
-                //errorText: 'Error Text',
+              Text("Phone Number"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "PhoneNumber",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-          ],
+            ],
+          ),
         ));
 
     return MaterialApp(
       title: 'SignUp',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('SignUp'),
-          ),
-          body: form),
+        appBar: AppBar(
+          title: Text('SignUp'),
+        ),
+        body: form,
+      ),
     );
   }
 }
