@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_project/loginpage.dart';
+import 'package:mobile_project/signup.dart';
+import 'package:mobile_project/create_event.dart';
+import 'package:mobile_project/join_event.dart';
+import 'package:mobile_project/userProfile.dart';
 
 void main() => runApp(MyApp());
 
@@ -6,244 +12,142 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        backgroundColor: Colors.blueGrey,
+      ),
       title: "Home Page",
-      // theme: ThemeData.dark(),
-      home: SignUpForm(),
+      home: MenuBar(),
     );
   }
 }
 
-class LoginForm extends StatefulWidget {
+class MenuBar extends StatefulWidget {
   @override
-  _LoginForm createState() => _LoginForm();
+  _MenuBarState createState() => _MenuBarState();
 }
 
-class _LoginForm extends State<LoginForm> {
-  var data;
+class _MenuBarState extends State<MenuBar> {
+  var _currentIndex = 0;
+  final List<Widget> _children = [
+    LoginForm(),
+    SignUpForm(),
+    MyCustomForm(),
+    ListViewSearch(),
+    UserProfile()
+  ];
+
+  void OnTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  Icon cusIcon = Icon(Icons.search);
+  Widget cusSearchBar = Text("Monika");
   @override
   Widget build(BuildContext context) {
-    Widget fromText = Container(
-        padding: const EdgeInsets.all(50),
-        child: SingleChildScrollView(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Username"),
-                  TextField(
+    return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: cusIcon,
+            onPressed: () {
+              setState(() {
+                if (this.cusIcon.icon == Icons.search) {
+                  this.cusIcon = Icon(Icons.cancel);
+                  this.cusSearchBar = TextField(
+                    textInputAction: TextInputAction.go,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter Email - Username',
-                      //errorText: 'Error Text',
+                      border: InputBorder.none,
+                      hintText: "Search here",
                     ),
-                  ),
-                  Text("Password"),
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: "*",
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter Password',
-                      errorText: 'Error Text',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
                     ),
-                  ),
-                ],
-              )),
-            ],
+                  );
+                } else {
+                  this.cusIcon = Icon(Icons.search);
+                  this.cusSearchBar = Text("Monika");
+                }
+              });
+            },
           ),
-        ));
-
-    Color color = Theme.of(context).primaryColor;
-
-    var buttonSection = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildButtonColumn(color, 'Login'),
-          _buildButtonColumn(color, 'Signup'),
         ],
+        title: cusSearchBar,
       ),
-    );
-
-    return MaterialApp(
-      title: "Event Ogranizer",
-      theme: ThemeData.dark(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Events Organizer"),
-        ),
-        body: ListView(
-          children: [fromText, buttonSection],
-        ),
-      ),
-    );
-  }
-
-  Column _buildButtonColumn(Color color, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            onPressed: () {},
-            color: Colors.indigo,
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w900,
-                color: Colors.cyan,
-              ),
+      drawer: Column(
+        children: [
+          Container(
+            child: RaisedButton(
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Createevent(),
+                    ),
+                  );
+                });
+              },
+              child: Text("Create Event"),
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-//##################################################################################
-class SignUpForm extends StatefulWidget {
-  @override
-  _SignUpForm createState() => _SignUpForm();
-}
-
-class _SignUpForm extends State<SignUpForm> {
-  @override
-  Widget build(BuildContext context) {
-    Widget form = Container(
-        padding: const EdgeInsets.all(32),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("First Name"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "FirstName",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Last Name"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "LastName",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Email"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Email",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Password"),
-              TextFormField(
-                obscureText: true,
-                obscuringCharacter: "*",
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Password",
-                  counterText: '0 characters',
-
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Confirm Password"),
-              TextFormField(
-                obscureText: true,
-                obscuringCharacter: "*",
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Confrim Password",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Socail ID"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Social ID",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Text("Phone Number"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "PhoneNumber",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-            ],
+          Container(
+            child: RaisedButton(
+              onPressed: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => JoinEvent(),
+                    ),
+                  );
+                });
+              },
+              child: Text("Your Events"),
+            ),
           ),
-        ));
-
-    return MaterialApp(
-      title: 'SignUp',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('SignUp'),
-        ),
-        body: form,
+          Container(
+            child: RaisedButton(
+              onPressed: () {
+                setState(() {});
+              },
+              child: Text("Join Event"),
+            ),
+          ),
+        ],
+      ),
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: OnTappedBar,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              title: Text('login'),
+              backgroundColor: Colors.blueGrey),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            title: Text('signup'),
+            backgroundColor: Colors.blueGrey,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Create Event'),
+            backgroundColor: Colors.blueGrey,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_business_rounded),
+            title: Text('join Event'),
+            backgroundColor: Colors.blueGrey,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            title: Text('profile'),
+            backgroundColor: Colors.blueGrey,
+          ),
+        ],
       ),
     );
   }
