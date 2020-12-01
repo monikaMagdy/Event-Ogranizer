@@ -36,11 +36,7 @@ class _DisplayEvents extends State<DisplayEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Display events"),
-      ),
-      body: Column(
+    return Column(
         children: list.map((data) {
           return ListTile(
             title: Text(data.eventName),
