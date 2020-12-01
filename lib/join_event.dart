@@ -30,8 +30,8 @@ class _ListViewSearchState extends State<ListViewSearch> {
       EventData eventData = new EventData();
 
       _newData = eventData.eventDB
-          .where((EventData) =>
-              (EventData.eventName.toLowerCase().contains(value.toLowerCase())))
+          .where((eventData) =>
+              (eventData.eventName.toLowerCase().contains(value.toLowerCase())))
           .toList();
     });
   }

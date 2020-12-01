@@ -1,4 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/buttomMenu.dart';
+
+class UserProfileSatetless extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'UserProfile',
+      //theme: ThemeData.dark(),
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[MenuBar(), UserProfile()],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class UserProfile extends StatefulWidget {
   @override
@@ -8,8 +26,8 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    Widget profile = Container(
+      child: Center(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -116,6 +134,13 @@ class _UserProfileState extends State<UserProfile> {
             ],
           ),
         ),
+      ),
+    );
+    return MaterialApp(
+      title: 'SignUp',
+      //theme: ThemeData.dark(),
+      home: Scaffold(
+        body: profile,
       ),
     );
   }

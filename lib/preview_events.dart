@@ -4,13 +4,10 @@ import 'event.dart';
 class Events extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // todo: implement build
     return MaterialApp(
       title: 'preview events',
       home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Welcome to Flutter'),
-        ),
         body: DisplayEvents(),
       ),
     );

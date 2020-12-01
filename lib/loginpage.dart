@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:mobile_project/create_event.dart';
 import 'package:mobile_project/signup.dart';
+import 'join_event.dart';
+import 'package:flutter/material.dart';
+import 'package:mobile_project/Animation.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -8,97 +9,232 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginForm extends State<LoginForm> {
-  var data;
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final formKey = new GlobalKey<FormState>();
+
+  String email;
+  String password;
   @override
-  Widget build(BuildContext context) {
-    Widget fromText = Container(
-        padding: const EdgeInsets.all(50),
-        child: SingleChildScrollView(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Username"),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter Email - Username',
-                      //errorText: 'Error Text',
-                    ),
-                  ),
-                  Text("Password"),
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: "*",
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter Password',
-                      //errorText: 'Error Text',
-                    ),
-                  ),
-                ],
-              )),
-            ],
-          ),
-        ));
-
-    Color color = Theme.of(context).primaryColor;
-
-    var buttonSection = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildButtonColumn(color, 'Login'),
-          _buildButtonColumn(color, 'Signup'),
-        ],
-      ),
-    );
-
-    return MaterialApp(
-      title: "Event Ogranizer",
-      // theme: ThemeData.dark(),
-      home: Scaffold(
-        body: ListView(
-          children: [fromText, buttonSection],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
   }
 
-  Column _buildButtonColumn(Color color, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            onPressed: () {
-              setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Createevent(),
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _submit() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      performLogin();
+    }
+  }
+
+  void performLogin() {
+    setState(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => JoinEvent()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/background.png'),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              child: Stack(
+                children: <Widget>[
+                  FadeAnimation(
+                    1,
+                    Positioned(
+                      left: 30,
+                      width: 80,
+                      height: 200,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/light-1.png'),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              });
-            },
-            color: Colors.indigo,
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w900,
-                color: Colors.cyan,
+                  FadeAnimation(
+                    1.3,
+                    Positioned(
+                      left: 140,
+                      width: 80,
+                      height: 150,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/light-2.png'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  FadeAnimation(
+                    1.5,
+                    Positioned(
+                      right: 40,
+                      top: 40,
+                      width: 80,
+                      height: 150,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/clock.png'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  FadeAnimation(
+                      1.6,
+                      Positioned(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 50),
+                          child: Center(
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                ],
               ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: new Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Email"),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Email",
+                          counterText: '0 characters',
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          } else if (!RegExp(
+                                  '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                              .hasMatch(value)) {
+                            return 'Enter Valid Email';
+                          }
+                          return null;
+                        },
+                        onSaved: (_email) {
+                          email = _email;
+                        },
+                      ),
+                      Text("Password"),
+                      TextFormField(
+                        obscureText: true,
+                        obscuringCharacter: "*",
+                        decoration: InputDecoration(
+                            focusColor: Colors.white,
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter Password',
+                            counterText: '0 characters'),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter some text';
+                          } else if (value.length < 6) {
+                            return 'Social ID must be 6 character';
+                          }
+                          return null;
+                        },
+                        onSaved: (_password) {
+                          password = _password;
+                        },
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                            ),
+                            RaisedButton(
+                              onPressed: () {
+                                _submit();
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              color: Colors.blueGrey,
+                              padding: EdgeInsets.only(
+                                left: 140.0,
+                                right: 140.0,
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "login",
+                                  ),
+                                ],
+                              ),
+                            ),
+                            RaisedButton(
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUpForm()),
+                                  );
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              highlightElevation: 0,
+                              color: Colors.blueGrey,
+                              padding:
+                                  EdgeInsets.only(left: 130.0, right: 130.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Text("Signup"),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
