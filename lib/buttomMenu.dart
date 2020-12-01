@@ -118,8 +118,8 @@ class _MenuBarState extends State<MenuBar> {
             backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_business_rounded),
-            label: 'join Event',
+            icon: Icon(Icons.search),
+            label: 'Search Event',
             backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(

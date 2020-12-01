@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/buttomMenu.dart';
 
 class SignUpFromStatless extends StatelessWidget {
   @override
@@ -52,7 +53,7 @@ class _SignUpForm extends State<SignUpForm> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SignUpForm()),
+        MaterialPageRoute(builder: (context) => MenuBar()),
       );
     });
   }

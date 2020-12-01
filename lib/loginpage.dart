@@ -1,5 +1,5 @@
 import 'package:mobile_project/signup.dart';
-import 'join_event.dart';
+import 'buttomMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Animation.dart';
 
@@ -36,7 +36,7 @@ class _LoginForm extends State<LoginForm> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => JoinEvent()),
+        MaterialPageRoute(builder: (context) => MenuBar()),
       );
     });
   }
