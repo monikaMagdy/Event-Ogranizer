@@ -9,6 +9,7 @@ class ChoosenEvent extends StatelessWidget {
   String address;
   String date;
   String dresscode;
+
   ChoosenEvent.data(event) {
     this.event = event;
   }

@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import 'package:mobile_project/signup.dart';
 import 'join_event.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Animation.dart';
+=======
+import 'package:flutter/material.dart';
+import 'package:mobile_project/create_event.dart';
+>>>>>>> 451abde389b58a8ad3046e9a10e82f09729157cc
 
 class LoginForm extends StatefulWidget {
   @override
