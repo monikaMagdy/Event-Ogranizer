@@ -4,13 +4,10 @@ import 'event.dart';
 class Events extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // todo: implement build
     return MaterialApp(
       title: 'preview events',
       home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Welcome to Flutter'),
-        ),
         body: DisplayEvents(),
       ),
     );
@@ -33,6 +30,7 @@ class _DisplayEvents extends State<DisplayEvents> {
       ),
       body: Column(
         children: eventData.eventDB.map((data) {
+          // ignore: unused_local_variable
           final bool alreadySaved = eventData.eventDB.contains(data.isFavorite);
           return ListTile(
             title: Text(data.eventName),
