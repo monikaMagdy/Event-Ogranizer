@@ -37,29 +37,28 @@ class _DisplayEvents extends State<DisplayEvents> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: list.map((data) {
-          return ListTile(
-            title: Text(data.eventName),
-            subtitle: Column(
-              children: <Widget>[
-                Text(data.address),
-                Text(data.date),
-                Text(data.dresscode),
-                Text(data.eventCode.toString()),
-                Text(data.limitAttending.toString()),
-              ],
-            ),
-            trailing: Icon(
-              data.isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: data.isFavorite ? Colors.red : null,
-            ),
-            onTap: () {
-              data.setFavorite(!data.isFavorite);
-              refresh();
-            },
-          );
-        }).toList(),
-      ),
+      children: list.map((data) {
+        return ListTile(
+          title: Text(data.eventName),
+          subtitle: Column(
+            children: <Widget>[
+              Text(data.address),
+              Text(data.date),
+              Text(data.dresscode),
+              Text(data.eventCode.toString()),
+              Text(data.limitAttending.toString()),
+            ],
+          ),
+          trailing: Icon(
+            data.isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: data.isFavorite ? Colors.red : null,
+          ),
+          onTap: () {
+            data.setFavorite(!data.isFavorite);
+            refresh();
+          },
+        );
+      }).toList(),
     );
   }
 }
