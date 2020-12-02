@@ -3,12 +3,6 @@ import 'event.dart';
 
 class ChoosenEvent extends StatelessWidget {
   Event event;
-  int eventCode;
-  String eventName;
-  int limitAttending;
-  String address;
-  String date;
-  String dresscode;
 
   ChoosenEvent.data(event) {
     this.event = event;

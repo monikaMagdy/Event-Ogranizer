@@ -35,7 +35,7 @@ class EventData {
         limitAttending: 100,
         address: 'El rehab 2 street 12',
         date: '22/10/2021',
-        image: 'images/img0.jpg',
+        image: 'assets/images/img0.jpg',
         dresscode: 'casual',
         isFavorite: true),
     Event(
@@ -45,7 +45,7 @@ class EventData {
         limitAttending: 50,
         address: '112 elObour buildings',
         date: '30/11/2020',
-        image: 'images/img1.jpg',
+        image: 'assets/images/img1.jpg',
         dresscode: 'semi-formal',
         isFavorite: false),
     Event(
@@ -55,7 +55,7 @@ class EventData {
         limitAttending: 150,
         address: 'mall misr, october',
         date: '28/11/2020',
-        image: 'images/img2.jpg',
+        image: 'assets/images/img2.jpg',
         dresscode: 'trendy',
         isFavorite: true),
   ];

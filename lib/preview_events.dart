@@ -42,6 +42,12 @@ class _DisplayEvents extends State<DisplayEvents> {
           title: Text(data.eventName),
           subtitle: Column(
             children: <Widget>[
+              const RaisedButton(
+                onPressed: null,
+                textColor: Colors.white,
+                child: Text('join this event', style: TextStyle(fontSize: 20)),
+              ),
+              //Image(image: AssetImage(data.image)),
               Text(data.address),
               Text(data.date),
               Text(data.dresscode),
