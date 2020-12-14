@@ -221,7 +221,7 @@ class _SignUpForm extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40),
                 ),
                 highlightElevation: 0,
-                color: Colors.blueGrey,
+                color: Colors.indigo[200],
                 padding: EdgeInsets.only(left: 130.0, right: 130.0),
                 child: Column(
                   children: <Widget>[
@@ -239,6 +239,11 @@ class _SignUpForm extends State<SignUpForm> {
       title: 'SignUp',
       //theme: ThemeData.dark(),
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.indigo[200],
+          centerTitle: true,
+          title: Text("Signup"),
+        ),
         body: form,
       ),
     );

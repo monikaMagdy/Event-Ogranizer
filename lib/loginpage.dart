@@ -43,10 +43,12 @@ class _LoginForm extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Container(
-        child: Column(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: ListView(
           children: <Widget>[
             Container(
               height: 300,
@@ -58,23 +60,20 @@ class _LoginForm extends State<LoginForm> {
               ),
               child: Stack(
                 children: <Widget>[
-                  FadeAnimation(
-                    1,
-                    Positioned(
-                      left: 30,
-                      width: 80,
-                      height: 200,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/light-1.png'),
-                          ),
+                  Positioned(
+                    left: 30,
+                    width: 80,
+                    height: 200,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/light-1.png'),
                         ),
                       ),
                     ),
                   ),
                   FadeAnimation(
-                    1.3,
+                    1.6,
                     Positioned(
                       left: 140,
                       width: 80,
@@ -88,39 +87,34 @@ class _LoginForm extends State<LoginForm> {
                       ),
                     ),
                   ),
-                  FadeAnimation(
-                    1.5,
-                    Positioned(
-                      right: 40,
-                      top: 40,
-                      width: 80,
-                      height: 150,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/clock.png'),
+                  Positioned(
+                    right: 40,
+                    top: 40,
+                    width: 80,
+                    height: 150,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/clock.png'),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 50),
+                      child: Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  FadeAnimation(
-                      1.6,
-                      Positioned(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 50),
-                          child: Center(
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
                 ],
               ),
             ),
@@ -128,107 +122,104 @@ class _LoginForm extends State<LoginForm> {
               padding: const EdgeInsets.all(20.0),
               child: new Form(
                 key: formKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Email"),
-                      TextFormField(
-                        decoration: const InputDecoration(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Email"),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Email",
+                        counterText: '0 characters',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (!RegExp(
+                                '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
+                            .hasMatch(value)) {
+                          return 'Enter Valid Email';
+                        }
+                        return null;
+                      },
+                      onSaved: (_email) {
+                        email = _email;
+                      },
+                    ),
+                    Text("Password"),
+                    TextFormField(
+                      obscureText: true,
+                      obscuringCharacter: "*",
+                      decoration: InputDecoration(
+                          focusColor: Colors.white,
                           border: OutlineInputBorder(),
-                          hintText: "Email",
-                          counterText: '0 characters',
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          } else if (!RegExp(
-                                  '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]')
-                              .hasMatch(value)) {
-                            return 'Enter Valid Email';
-                          }
-                          return null;
-                        },
-                        onSaved: (_email) {
-                          email = _email;
-                        },
-                      ),
-                      Text("Password"),
-                      TextFormField(
-                        obscureText: true,
-                        obscuringCharacter: "*",
-                        decoration: InputDecoration(
-                            focusColor: Colors.white,
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter Password',
-                            counterText: '0 characters'),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter some text';
-                          } else if (value.length < 6) {
-                            return 'Social ID must be 6 character';
-                          }
-                          return null;
-                        },
-                        onSaved: (_password) {
-                          password = _password;
-                        },
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
+                          hintText: 'Enter Password',
+                          counterText: '0 characters'),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (value.length < 6) {
+                          return 'Social ID must be 6 character';
+                        }
+                        return null;
+                      },
+                      onSaved: (_password) {
+                        password = _password;
+                      },
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _submit();
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
                             ),
-                            RaisedButton(
-                              onPressed: () {
-                                _submit();
-                              },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              color: Colors.blueGrey,
-                              padding: EdgeInsets.only(
-                                left: 140.0,
-                                right: 140.0,
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "login",
-                                  ),
-                                ],
-                              ),
+                            color: Colors.indigo[200],
+                            padding: EdgeInsets.only(
+                              left: 140.0,
+                              right: 140.0,
                             ),
-                            RaisedButton(
-                              onPressed: () {
-                                setState(() {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SignUpForm()),
-                                  );
-                                });
-                              },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              highlightElevation: 0,
-                              color: Colors.blueGrey,
-                              padding:
-                                  EdgeInsets.only(left: 130.0, right: 130.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Text("Signup"),
-                                ],
-                              ),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "login",
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              setState(() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpForm()),
+                                );
+                              });
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            highlightElevation: 0,
+                            color: Colors.indigo[200],
+                            padding: EdgeInsets.only(left: 130.0, right: 130.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text("Signup"),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

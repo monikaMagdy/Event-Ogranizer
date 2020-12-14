@@ -60,48 +60,6 @@ class _MenuBarState extends State<MenuBar> {
         ],
         title: cusSearchBar,
       ),
-      drawer: Column(
-        children: [
-          Container(
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Createevent(),
-                    ),
-                  );
-                });
-              },
-              child: Text("Create Event"),
-            ),
-          ),
-          Container(
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => JoinEvent(),
-                    ),
-                  );
-                });
-              },
-              child: Text("Your Events"),
-            ),
-          ),
-          Container(
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {});
-              },
-              child: Text("Join Event"),
-            ),
-          ),
-        ],
-      ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
