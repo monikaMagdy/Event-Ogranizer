@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/buttomMenu.dart';
 
@@ -108,6 +109,26 @@ class _SignUpForm extends State<SignUpForm> {
                 },
                 onSaved: (lastName) => lastName = lastName,
               ),
+              Text("Username"),
+              TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "username",
+                  counterText: '0 characters',
+                  //errorText: 'Error Text',
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter some text';
+                  } else if (value.length < 4) {
+                    return 'last name too short';
+                  } else if (!RegExp('^[a-zA-Z-]').hasMatch(value)) {
+                    return 'Enter Valid Username';
+                  }
+                  return null;
+                },
+                onSaved: (lastName) => lastName = lastName,
+              ),
               //####################################
               Text("Email"),
               TextFormField(
@@ -145,6 +166,8 @@ class _SignUpForm extends State<SignUpForm> {
                     return 'Please enter some text';
                   } else if (value.length < 6) {
                     return 'Password is not less than 6 characters';
+                  } else if (!RegExp('^[a-zA-Z0-9]').hasMatch(value)) {
+                    return 'Enter Valid Email';
                   }
                   return null;
                 },
@@ -174,6 +197,7 @@ class _SignUpForm extends State<SignUpForm> {
               ),
               Text("Socail ID"),
               TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Social ID",
@@ -194,6 +218,7 @@ class _SignUpForm extends State<SignUpForm> {
               ),
               Text("Phone Number"),
               TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "PhoneNumber",
