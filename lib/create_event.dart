@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:table_calendar/table_calendar.dart';
 import 'package:mobile_project/preview_events.dart';
 
 class Createevent extends StatelessWidget {
@@ -27,10 +28,11 @@ class MyCustomFormState extends State<MyCustomForm> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
+  DateTime _dateTime;
   String capacity;
   String eventName;
   String eventAddress;
-  String eventDresscode;
+  String eventDresscode = "Classic";
   String eventDate;
   String eventPolicy;
   @override
@@ -71,6 +73,7 @@ class MyCustomFormState extends State<MyCustomForm> {
             children: <Widget>[
               Text(" People capity"),
               TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "LimiAttending",
@@ -80,7 +83,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   if (value.isEmpty) {
                     return 'Please enter some text';
                   }
-                  if (value.length < 25 || value.length > 50) {
+                  if (value.length < 2 || value.length > 4) {
                     return 'check capcity';
                   }
                   return null;
@@ -102,6 +105,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                     return 'Please enter some text';
                   } else if (value.length < 3) {
                     return 'event name too short';
+                  } else if (!RegExp('^[a-zA-Z0-9]').hasMatch(value)) {
+                    return 'Enter Valid Username';
                   }
                   return null;
                 },
@@ -117,6 +122,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Please enter some text';
+                  } else if (!RegExp('^^[a-zA-Z0-9]').hasMatch(value)) {
+                    return 'Enter Valid Username';
                   }
                   return null;
                 },
@@ -124,46 +131,41 @@ class MyCustomFormState extends State<MyCustomForm> {
                   eventName = eventname;
                 },
               ),
-              Text("Event Dresscode"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "dress code ",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else if (value.length < 5) {
-                    return 'Event Dress Code';
-                  }
-                  return null;
+              Text('Event Dress Code'),
+              DropdownButtonFormField(
+                value: eventDresscode,
+                onChanged: (String newValue) {
+                  setState(() {
+                    eventDresscode = newValue;
+                  });
                 },
-                onSaved: (eventdate) {
-                  eventDate = eventdate;
-                },
+                items: <String>[
+                  'Classic',
+                  'Halloween',
+                  'Fancy Dress',
+                  'semi-Fromal'
+                ].map<DropdownMenuItem<String>>((String dressCode) {
+                  return DropdownMenuItem<String>(
+                    child: Text(dressCode),
+                    value: dressCode,
+                  );
+                }).toList(),
               ),
-              Text("Event Date"),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Date",
-                  counterText: '0 characters',
-                  //errorText: 'Error Text',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter some text';
-                  } else if (value.length < 5) {
-                    return 'Event Date';
-                  }
-                  return null;
-                },
-                onSaved: (eventdate) {
-                  eventDate = eventdate;
-                },
-              ),
+              Text(_dateTime == null ? '' : _dateTime.toString()),
+              RaisedButton(
+                  child: Text('Pick a Date'),
+                  onPressed: () {
+                    showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2022))
+                        .then((date) {
+                      setState(() {
+                        _dateTime = date;
+                      });
+                    });
+                  }),
               Text("Event POLICY"),
               TextFormField(
                 decoration: const InputDecoration(
@@ -177,6 +179,8 @@ class MyCustomFormState extends State<MyCustomForm> {
                     return 'Please enter some text';
                   } else if (value.length < 10) {
                     return 'Event Policy too short!';
+                  } else if (!RegExp('^[a-zA-Z0-9]').hasMatch(value)) {
+                    return 'Enter Valid Username';
                   }
                   return null;
                 },

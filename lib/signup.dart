@@ -85,6 +85,8 @@ class _SignUpForm extends State<SignUpForm> {
                     return 'Please enter some text';
                   } else if (value.length < 3) {
                     return 'first name too short';
+                  } else if (!RegExp('^[a-zA-Z]').hasMatch(value)) {
+                    return 'Enter Valid Username';
                   }
                   return null;
                 },
@@ -104,6 +106,8 @@ class _SignUpForm extends State<SignUpForm> {
                     return 'Please enter some text';
                   } else if (value.length < 4) {
                     return 'last name too short';
+                  } else if (!RegExp('^[a-zA-Z]').hasMatch(value)) {
+                    return 'Enter Valid Username';
                   }
                   return null;
                 },
