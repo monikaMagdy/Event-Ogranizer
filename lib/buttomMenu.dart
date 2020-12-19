@@ -68,22 +68,22 @@ class _MenuBarState extends State<MenuBar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.indigo[100],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
             label: 'Create Event',
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.indigo[100],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search Event',
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.indigo[100],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'profile',
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.indigo[100],
           ),
         ],
       ),

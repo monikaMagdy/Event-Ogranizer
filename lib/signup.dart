@@ -250,7 +250,7 @@ class _SignUpForm extends State<SignUpForm> {
                   borderRadius: BorderRadius.circular(40),
                 ),
                 highlightElevation: 0,
-                color: Colors.indigo[200],
+                color: Colors.indigo[100],
                 padding: EdgeInsets.only(left: 130.0, right: 130.0),
                 child: Column(
                   children: <Widget>[

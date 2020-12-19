@@ -133,6 +133,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               ),
               Text('Event Dress Code'),
               DropdownButtonFormField(
+                focusColor: Colors.indigo[200],
                 value: eventDresscode,
                 onChanged: (String newValue) {
                   setState(() {
@@ -151,9 +152,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   );
                 }).toList(),
               ),
-              Text(_dateTime == null ? '' : _dateTime.toString()),
+              Text(_dateTime == null
+                  ? 'Select Your Event date'
+                  : _dateTime.toString()),
               RaisedButton(
                   child: Text('Pick a Date'),
+                  color: Colors.indigo[200],
                   onPressed: () {
                     showDatePicker(
                             context: context,
