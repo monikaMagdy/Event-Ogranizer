@@ -35,6 +35,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   String eventDresscode = "Classic";
   String eventDate;
   String eventPolicy;
+
+  int font = 20;
   @override
   void initState() {
     super.initState();
@@ -71,7 +73,12 @@ class MyCustomFormState extends State<MyCustomForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(" People capity"),
+              Text(
+                " People capity",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
@@ -92,7 +99,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   capacity = capacity;
                 },
               ),
-              Text("Event Name"),
+              Text(
+                "Event Name",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -111,7 +123,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   return null;
                 },
               ),
-              Text("Event address"),
+              Text(
+                "Event address",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -131,7 +148,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                   eventName = eventname;
                 },
               ),
-              Text('Event Dress Code'),
+              Text(
+                'Event Dress Code',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               DropdownButtonFormField(
                 focusColor: Colors.indigo[200],
                 value: eventDresscode,
@@ -152,9 +174,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                   );
                 }).toList(),
               ),
-              Text(_dateTime == null
-                  ? 'Select Your Event date'
-                  : _dateTime.toString()),
+              Text(
+                _dateTime == null
+                    ? 'Select Your Event date'
+                    : _dateTime.toString(),
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               RaisedButton(
                   child: Text('Pick a Date'),
                   color: Colors.indigo[200],
@@ -170,7 +197,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                       });
                     });
                   }),
-              Text("Event POLICY"),
+              Text(
+                "Event POLICY",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
               TextFormField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
