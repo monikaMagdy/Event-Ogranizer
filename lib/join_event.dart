@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'event.dart';
+import 'models/event.dart';
+import 'models/events.dart';
+
 import 'your_event.dart';
 
 class JoinEvent extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'event.dart';
+import 'models/event.dart';
 
 class ChoosenEvent extends StatelessWidget {
   Event event;

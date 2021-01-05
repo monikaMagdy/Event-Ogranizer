@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'event.dart';
+import 'models/event.dart';
+import 'models/events.dart';
 
 class Events extends StatelessWidget {
   @override
@@ -60,7 +61,7 @@ class _DisplayEvents extends State<DisplayEvents> {
             color: data.isFavorite ? Colors.red : null,
           ),
           onTap: () {
-            data.setFavorite(!data.isFavorite);
+            data.toggleFavoriteStatus();
             refresh();
           },
         );
