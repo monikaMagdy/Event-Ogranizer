@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'models/event.dart';
 import 'models/events.dart';
+import 'package:provider/provider.dart';
+
+import './screens/cart_screen.dart';
+import './screens/products_overview_screen.dart';
+import './screens/product_detail_screen.dart';
+import './models/events.dart';
+import './models/cart.dart';
+import './models/orders.dart';
+import './screens/orders_screen.dart';
+import './screens/user_products_screen.dart';
+import './screens/edit_product_screen.dart';
 
 class Events extends StatelessWidget {
   @override
@@ -37,35 +48,33 @@ class _DisplayEvents extends State<DisplayEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: list.map((data) {
-        return ListTile(
-          title: Text(data.eventName),
-          subtitle: Column(
-            children: <Widget>[
-              const RaisedButton(
-                onPressed: null,
-                textColor: Colors.white,
-                child: Text('join this event', style: TextStyle(fontSize: 20)),
-              ),
-              //Image(image: AssetImage(data.image)),
-              Text(data.address),
-              Text(data.date),
-              Text(data.dresscode),
-              Text(data.eventCode.toString()),
-              Text(data.limitAttending.toString()),
-            ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: EventData(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Cart(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Orders(),
+        ),
+      ],
+      child: MaterialApp(
+          title: 'Event organizer',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            accentColor: Colors.cyan,
+            fontFamily: 'Lato',
           ),
-          trailing: Icon(
-            data.isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: data.isFavorite ? Colors.red : null,
-          ),
-          onTap: () {
-            data.toggleFavoriteStatus();
-            refresh();
-          },
-        );
-      }).toList(),
+          home: ProductsOverviewScreen(),
+          routes: {
+            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            CartScreen.routeName: (ctx) => CartScreen(),
+            OrdersScreen.routeName: (ctx) => OrdersScreen(),
+            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+            EditProductScreen.routeName: (ctx) => EditProductScreen(),
+          }),
     );
   }
 }

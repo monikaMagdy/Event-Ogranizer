@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/preview_events.dart';
+import './screens/products_overview_screen.dart';
 import 'package:mobile_project/create_event.dart';
 import 'package:mobile_project/join_event.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
 import 'package:mobile_project/userProfile.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +15,7 @@ class MenuBar extends StatefulWidget {
 class _MenuBarState extends State<MenuBar> {
   var _currentIndex = 0;
   final List<Widget> _children = [
-    Events(),
+    ProductsOverviewScreen(),
     Createevent(),
     JoinEvent(),
     UserProfile()
@@ -26,40 +28,10 @@ class _MenuBarState extends State<MenuBar> {
   }
 
   Icon cusIcon = Icon(Icons.search);
-  Widget cusSearchBar = Text("Search");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.indigoAccent[100],
-        actions: <Widget>[
-          IconButton(
-            icon: cusIcon,
-            onPressed: () {
-              setState(() {
-                if (this.cusIcon.icon == Icons.search) {
-                  this.cusIcon = Icon(Icons.cancel);
-                  this.cusSearchBar = TextField(
-                    textInputAction: TextInputAction.go,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Search here",
-                    ),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  );
-                } else {
-                  this.cusIcon = Icon(Icons.search);
-                  this.cusSearchBar = Text("search");
-                }
-              });
-            },
-          ),
-        ],
-        title: cusSearchBar,
-      ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTappedBar,
