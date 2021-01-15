@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:mobile_project/loginpage.dart';
 
-// void main() => runApp(MyApp());
+void main() => runApp(MyApp());
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: "Home Page",
-//       home: LoginForm(),
-//     );
-//   }
-// }
-import 'package:flutter/material.dart';
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Home Page",
+      home: LoginForm(),
+    );
+  }
+}
+/*import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './screens/cart_screen.dart';
@@ -25,10 +25,9 @@ import './models/orders.dart';
 import './screens/orders_screen.dart';
 import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
+*/
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+/*class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -61,3 +60,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+*/
