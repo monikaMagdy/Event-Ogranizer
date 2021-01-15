@@ -45,7 +45,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedProduct.address.toString(),
+                loadedProduct.address,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
@@ -63,7 +63,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedProduct.date.toString(),
+                loadedProduct.date,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
