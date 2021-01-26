@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'models/event.dart';
 import 'models/events.dart';
-import 'package:provider/provider.dart';
-
+//import 'package:provider/provider.dart';
 import './screens/cart_screen.dart';
-import './screens/products_overview_screen.dart';
 import './screens/product_detail_screen.dart';
 import './models/events.dart';
-import './models/cart.dart';
-import './models/orders.dart';
+//import './models/cart.dart';
+//import './models/orders.dart';
 import './screens/orders_screen.dart';
 import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
@@ -37,6 +35,7 @@ class _DisplayEvents extends State<DisplayEvents> {
 
   @override
   void initState() {
+    super.initState();
     list = eventData.eventDB;
   }
 
@@ -48,34 +47,21 @@ class _DisplayEvents extends State<DisplayEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: EventData(),
+    return MaterialApp(
+        title: 'Event organizer',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          accentColor: Colors.cyan,
+          fontFamily: 'Lato',
         ),
-        ChangeNotifierProvider.value(
-          value: Cart(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Orders(),
-        ),
-      ],
-      child: MaterialApp(
-          title: 'Event organizer',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            accentColor: Colors.cyan,
-            fontFamily: 'Lato',
-          ),
-          home: ProductsOverviewScreen(),
-          routes: {
-            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-            CartScreen.routeName: (ctx) => CartScreen(),
-            OrdersScreen.routeName: (ctx) => OrdersScreen(),
-            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-            EditProductScreen.routeName: (ctx) => EditProductScreen(),
-          }),
-    );
+        // home: ProductsOverviewScreen(),
+        routes: {
+          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+          CartScreen.routeName: (ctx) => CartScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen(),
+          UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
+          EditProductScreen.routeName: (ctx) => EditProductScreen(),
+        });
   }
 }
 

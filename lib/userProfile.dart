@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_project/buttomMenu.dart';
 
 class UserProfileSatetless extends StatelessWidget {
   @override
@@ -10,7 +9,7 @@ class UserProfileSatetless extends StatelessWidget {
       home: Scaffold(
         body: SingleChildScrollView(
           child: new Column(
-            children: <Widget>[MenuBar(), UserProfile()],
+            children: <Widget>[UserProfile()],
           ),
         ),
       ),

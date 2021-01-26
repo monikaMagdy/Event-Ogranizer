@@ -1,6 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_project/buttomMenu.dart';
+
+import 'package:mobile_project/provider/userAddNotifier.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
+//import 'package:provider/provider.dart';
 
 class SignUpFromStatless extends StatelessWidget {
   @override
@@ -23,14 +26,21 @@ class _SignUpForm extends State<SignUpForm> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
-  TextEditingController _password = TextEditingController();
-  TextEditingController _confrimPassword = TextEditingController();
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confrimPassword = TextEditingController();
+  final TextEditingController _socialID = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
 
   String firstName;
   String lastName;
+  String username;
   String email;
   String password;
-  String socialId;
+  String socialID;
   String phoneNumber;
   @override
   void initState() {
@@ -54,7 +64,7 @@ class _SignUpForm extends State<SignUpForm> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MenuBar()),
+        MaterialPageRoute(builder: (context) => ProductsOverviewScreen()),
       );
     });
   }
@@ -72,6 +82,7 @@ class _SignUpForm extends State<SignUpForm> {
               ///######################################
               Text("First Name"),
               TextFormField(
+                controller: _firstName,
                 decoration: const InputDecoration(
                   labelText: "First Name",
                   border: OutlineInputBorder(),
@@ -95,6 +106,7 @@ class _SignUpForm extends State<SignUpForm> {
               //##########################################
               Text("Last Name"),
               TextFormField(
+                controller: _lastName,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "LastName",
@@ -115,6 +127,7 @@ class _SignUpForm extends State<SignUpForm> {
               ),
               Text("Username"),
               TextFormField(
+                controller: _username,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "username",
@@ -136,6 +149,7 @@ class _SignUpForm extends State<SignUpForm> {
               //####################################
               Text("Email"),
               TextFormField(
+                controller: _email,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Email",
@@ -201,6 +215,7 @@ class _SignUpForm extends State<SignUpForm> {
               ),
               Text("Socail ID"),
               TextFormField(
+                controller: _socialID,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -217,11 +232,12 @@ class _SignUpForm extends State<SignUpForm> {
                   return null;
                 },
                 onSaved: (socailID) {
-                  socialId = socailID;
+                  socialID = socailID;
                 },
               ),
               Text("Phone Number"),
               TextFormField(
+                controller: _phoneNumber,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -243,7 +259,21 @@ class _SignUpForm extends State<SignUpForm> {
                 },
               ),
               RaisedButton(
-                onPressed: () {
+                onPressed: () async {
+                  if (_firstName.text.isEmpty) {
+                    return;
+                  }
+                  /*await Provider.of<UserAddNotifer>(context, listen: false).addUser(_firstName.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_lastName.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_username.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_email.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_password.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_socialID.text);
+                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_phoneNumber.text);
+                  */
+                  UserAddNotifer addNotifer = UserAddNotifer();
+                  addNotifer.addUser(firstName, lastName, username, email,
+                      password, socialID, phoneNumber);
                   _submit();
                 },
                 shape: RoundedRectangleBorder(

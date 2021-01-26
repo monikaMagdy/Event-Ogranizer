@@ -1,8 +1,8 @@
-import 'package:mobile_project/buttomMenu.dart';
-import 'package:mobile_project/signup.dart';
-import './screens/products_overview_screen.dart';
+import 'package:mobile_project/provider/signup.dart';
+//import './screens/products_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Animation.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _LoginForm extends State<LoginForm> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MenuBar()),
+        MaterialPageRoute(builder: (context) => ProductsOverviewScreen()),
       );
     });
   }
