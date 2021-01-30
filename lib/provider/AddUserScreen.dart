@@ -1,18 +1,18 @@
+//////////////////// -------------SignUp-----------////////////////
+
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:mobile_project/screens/products_overview_screen.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 class SignUpFromStatless extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(),
-        body: SignUpForm(),
-      ),
+    return Scaffold(
+      appBar: AppBar(),
+      body: SignUpForm(),
     );
   }
 }
@@ -26,22 +26,22 @@ class _SignUpForm extends State<SignUpForm> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
 
-  final TextEditingController _firstName = TextEditingController();
-  final TextEditingController _lastName = TextEditingController();
-  final TextEditingController _username = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _confrimPassword = TextEditingController();
-  final TextEditingController _socialID = TextEditingController();
-  final TextEditingController _phoneNumber = TextEditingController();
+  TextEditingController _firstName = TextEditingController();
+  TextEditingController _lastName = TextEditingController();
+  TextEditingController _username = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  TextEditingController _confrimPassword = TextEditingController();
+  TextEditingController _socialID = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
 
-  String firstName;
+  /*String firstName;
   String lastName;
   String username;
   String email;
   String password;
   String socialID;
-  String phoneNumber;
+  String phoneNumber;*/
   @override
   void initState() {
     super.initState();
@@ -101,7 +101,7 @@ class _SignUpForm extends State<SignUpForm> {
                   }
                   return null;
                 },
-                onSaved: (firstname) => firstName = firstName,
+                onSaved: (_firstname) => _firstName = _firstName,
               ),
               //##########################################
               Text("Last Name"),
@@ -144,7 +144,7 @@ class _SignUpForm extends State<SignUpForm> {
                   }
                   return null;
                 },
-                onSaved: (lastName) => lastName = lastName,
+                onSaved: (username) => _username = _username,
               ),
               //####################################
               Text("Email"),
@@ -165,7 +165,7 @@ class _SignUpForm extends State<SignUpForm> {
                   }
                   return null;
                 },
-                onSaved: (email) => email = email,
+                onSaved: (email) => _email = _email,
               ),
               Text("Password"),
               TextFormField(
@@ -189,7 +189,7 @@ class _SignUpForm extends State<SignUpForm> {
                   }
                   return null;
                 },
-                onSaved: (_password) => password = _password,
+                onSaved: (_password) => _password = _password,
               ),
               Text("Confirm Password"),
               TextFormField(
@@ -231,8 +231,8 @@ class _SignUpForm extends State<SignUpForm> {
                   }
                   return null;
                 },
-                onSaved: (socailID) {
-                  socialID = socailID;
+                onSaved: (_socialID) {
+                  _socialID = _socialID;
                 },
               ),
               Text("Phone Number"),
@@ -260,20 +260,22 @@ class _SignUpForm extends State<SignUpForm> {
               ),
               RaisedButton(
                 onPressed: () async {
-                  if (_firstName.text.isEmpty) {
+                  if (_firstName.text.isEmpty || _lastName.text.isEmpty) {
                     return;
                   }
-                  /*await Provider.of<UserAddNotifer>(context, listen: false).addUser(_firstName.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_lastName.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_username.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_email.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_password.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_socialID.text);
-                  await Provider.of<UserAddNotifer>(context, listen: false).addUser(_phoneNumber.text);
-                  */
-                  UserAddNotifer addNotifer = UserAddNotifer();
+                  /*UserAddNotifer addNotifer = UserAddNotifer();
                   addNotifer.addUser(firstName, lastName, username, email,
-                      password, socialID, phoneNumber);
+                      password, socialID, phoneNumber);*/
+                  await Provider.of<UserAddNotifer>(context, listen: false)
+                      .addUser(
+                    _firstName.text,
+                    _lastName.text,
+                    _username.text,
+                    _email.text,
+                    _password.text,
+                    _socialID.text,
+                    _phoneNumber.text,
+                  );
                   _submit();
                 },
                 shape: RoundedRectangleBorder(

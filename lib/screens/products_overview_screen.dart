@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/create_event.dart';
 import 'package:mobile_project/join_event.dart';
-import 'package:mobile_project/userProfile.dart';
+import 'package:mobile_project/screens/User_HomeScreen.dart';
 import 'package:mobile_project/googleMaps.dart';
 //import 'package:flutter/services.dart';
 import 'package:provider/provider.dart' as provider;
@@ -17,6 +17,20 @@ enum FilterOptions {
   Favorites,
   All,
 }
+bool _showOnlyFavorites = false;
+
+class ProductsOverviewScreenLess extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (BuildContext context) {},
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: ProductsGrid(_showOnlyFavorites),
+      ),
+    );
+  }
+}
 
 class ProductsOverviewScreen extends StatefulWidget {
   @override
@@ -24,13 +38,13 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  var _showOnlyFavorites = false;
   var _currentIndex = 0;
+
   final List<Widget> _children = [
+    ProductsOverviewScreenLess(),
     Createevent(),
-    Maps(),
     JoinEvent(),
-    UserProfile()
+    HomeScreen(),
   ];
 
   void onTappedBar(int index) {
@@ -119,16 +133,5 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
     );
-
-    @override
-    Widget build(BuildContext context) {
-      return ChangeNotifierProvider(
-        create: (BuildContext context) {},
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: ProductsGrid(_showOnlyFavorites),
-        ),
-      );
-    }
   }
 }

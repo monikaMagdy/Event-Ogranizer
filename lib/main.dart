@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:mobile_project/models/events.dart';
+import 'package:mobile_project/models/cart.dart';
+import 'package:mobile_project/models/orders.dart';
+//import 'package:mobile_project/screens/User_HomeScreen.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
+import 'package:provider/provider.dart';
+import 'package:mobile_project/screens/product_detail_screen.dart';
+import 'package:mobile_project/screens/cart_screen.dart';
+import 'package:mobile_project/screens/orders_screen.dart';
+import 'package:mobile_project/screens/edit_product_screen.dart';
+import 'package:mobile_project/screens/user_products_screen.dart';
 import 'package:mobile_project/loginpage.dart';
 //import 'package:mobile_project/provider/userAddNotifier.dart';
-import 'package:provider/provider.dart';
-//import 'package:mobile_project/provider/userAddNotifier.dart';
-import './screens/cart_screen.dart';
 //import './screens/products_overview_screen.dart';
-import './screens/product_detail_screen.dart';
-import './models/events.dart';
-import './models/cart.dart';
-import './models/orders.dart';
-import './screens/orders_screen.dart';
-import './screens/user_products_screen.dart';
-import './screens/edit_product_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +25,7 @@ void main() => runApp(MyApp());
       },
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginForm(),
+        home: HomeScreen(),
       ),
     );
   }
@@ -38,6 +38,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<UserAddNotifer>(
+          create: (BuildContext context) {
+            return UserAddNotifer();
+          },
+        ),
         ChangeNotifierProvider.value(
           value: EventData(),
         ),
@@ -49,6 +54,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Event organizer',
           theme: ThemeData(
             primarySwatch: Colors.blue,
