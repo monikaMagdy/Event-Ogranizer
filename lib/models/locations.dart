@@ -1,4 +1,4 @@
-/*import 'dart:convert';
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
@@ -92,4 +92,3 @@ Future<Locations> getGoogleOffices() async {
         uri: Uri.parse(googleLocationsURL));
   }
 }
-*/
