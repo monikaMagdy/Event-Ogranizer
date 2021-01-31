@@ -1,4 +1,4 @@
-import 'package:mobile_project/provider/signup.dart';
+import 'package:mobile_project/provider/AddUserScreen.dart';
 //import './screens/products_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/Animation.dart';
