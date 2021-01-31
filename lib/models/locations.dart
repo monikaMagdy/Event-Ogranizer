@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
-part 'location.g.dart';
+part 'locations.g.dart';
 
 @JsonSerializable()
 class LatLng {
@@ -14,7 +13,7 @@ class LatLng {
   });
 
   factory LatLng.fromJson(Map<String, dynamic> json) => _$LatLngFromJson(json);
-  Map<String, dynamic> toJson() => _$LatLngToJosn(this);
+  Map<String, dynamic> toJson() => _$LatLngToJson(this);
 
   final double lat;
   final double lng;
@@ -29,8 +28,8 @@ class Region {
     this.zoom,
   });
 
-  factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(josn);
-  Map<String, dynamic> toJson() => _$RegionFromJson(this);
+  factory Region.fromJson(Map<String, dynamic> json) => _$RegionFromJson(json);
+  Map<String, dynamic> toJson() => _$RegionToJson(this);
 
   final LatLng coords;
   final String id;
@@ -39,8 +38,8 @@ class Region {
 }
 
 @JsonSerializable()
-class Offices {
-  Offices({
+class Office {
+  Office({
     this.address,
     this.id,
     this.image,
@@ -51,9 +50,8 @@ class Offices {
     this.region,
   });
 
-  factory Offices.fromJson(Map<String, dynamic> json) =>
-      _$OfficesFromJson(josn);
-  Map<String, dynamic> toJson() => _$OfficesFromJson(this);
+  factory Office.fromJson(Map<String, dynamic> json) => _$OfficeFromJson(json);
+  Map<String, dynamic> toJson() => _$OfficeToJson(this);
 
   final String address;
   final String id;
@@ -74,20 +72,23 @@ class Locations {
 
   factory Locations.fromJson(Map<String, dynamic> json) =>
       _$LocationsFromJson(json);
-  Map<String, dynamic> toJson() => _$LocationsFromJson(this);
+  Map<String, dynamic> toJson() => _$LocationsToJson(this);
 
-  final List<Offices> offices;
+  final List<Office> offices;
   final List<Region> regions;
 }
 
 Future<Locations> getGoogleOffices() async {
-  const googleLocationsURL = "https://about.google/static/data/locations.json";
+  const googleLocationsURL = 'https://about.google/static/data/locations.json';
 
+  // Retrieve the locations of Google offices
   final response = await http.get(googleLocationsURL);
   if (response.statusCode == 200) {
     return Locations.fromJson(json.decode(response.body));
   } else {
-    throw HttpException("unexpected status",
+    throw HttpException(
+        'Unexpected status code ${response.statusCode}:'
+        ' ${response.reasonPhrase}',
         uri: Uri.parse(googleLocationsURL));
   }
 }

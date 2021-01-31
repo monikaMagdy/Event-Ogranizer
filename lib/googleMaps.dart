@@ -1,20 +1,20 @@
 import "package:flutter/material.dart";
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mobile_project/models/location.dart';
-import 'package:mobile_project/models/location.dart' as locations;
+import 'package:mobile_project/models/locations.dart';
+import 'package:mobile_project/models/locations.dart' as locations;
+import 'package:latlong/latlong.dart';
 
-class Maps extends StatefulWidget {
+class MyApp extends StatefulWidget {
   @override
-  _MapsState createState() => _MapsState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _MapsState extends State<Maps> {
-  final Map<String, Marker> _marker = {};
-
+class _MyAppState extends State<MyApp> {
+  final Map<String, Marker> _markers = {};
   Future<void> _onMapCreated(GoogleMapController controller) async {
     final googleOffices = await locations.getGoogleOffices();
     setState(() {
-      _marker.clear();
+      _markers.clear();
       for (final office in googleOffices.offices) {
         final marker = Marker(
           markerId: MarkerId(office.name),
@@ -24,7 +24,7 @@ class _MapsState extends State<Maps> {
             snippet: office.address,
           ),
         );
-        _marker[office.name] = marker;
+        _markers[office.name] = marker;
       }
     });
   }
@@ -33,13 +33,17 @@ class _MapsState extends State<Maps> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Google Office Locations'),
+          backgroundColor: Colors.green[700],
+        ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: const LatLng(0, 0),
-            zoom: 2.0,
+            zoom: 2,
           ),
-          markers: _marker.values.toSet(),
+          markers: _markers.values.toSet(),
         ),
       ),
     );
