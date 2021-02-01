@@ -7,6 +7,7 @@ import './product_item.dart';
 class ProductsGrid extends StatelessWidget {
   final bool showFavs;
 
+  // ignore: sort_constructors_first
   ProductsGrid(this.showFavs);
 
   @override

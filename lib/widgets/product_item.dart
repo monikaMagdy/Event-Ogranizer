@@ -18,7 +18,7 @@ class ProductItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName,
-              arguments: event.eventCode,
+              arguments: event.id,
             );
           },
           child: Image.network(
@@ -48,8 +48,8 @@ class ProductItem extends StatelessWidget {
               Icons.shopping_cart,
             ),
             onPressed: () {
-              cart.addItem(event.eventCode.toString(),
-                  event.minimumCharge.toDouble(), event.eventName);
+              cart.addItem(event.id.toString(), event.minimumCharge.toDouble(),
+                  event.eventName);
               Scaffold.of(context).hideCurrentSnackBar();
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -60,7 +60,7 @@ class ProductItem extends StatelessWidget {
                   action: SnackBarAction(
                     label: 'UNDO',
                     onPressed: () {
-                      cart.removeSingleItem(event.eventCode.toString());
+                      cart.removeSingleItem(event.id.toString());
                     },
                   ),
                 ),

@@ -18,7 +18,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _editedProduct = Event(
-    eventCode: null,
+    id: null,
+    eventCode: 0,
     eventName: '',
     minimumCharge: 0,
     limitAttending: 0,
@@ -58,7 +59,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'address': _editedProduct.address,
           'date': _editedProduct.date,
           'Minimum charge': _editedProduct.minimumCharge.toString(),
-          // 'imageUrl': _editedProduct.imageUrl,
+          'imageUrl': _editedProduct.image,
           'imageUrl': '',
         };
         _imageUrlController.text = _editedProduct.image;
@@ -99,7 +100,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _form.currentState.save();
     if (_editedProduct.eventCode != null) {
       provider.Provider.of<EventData>(context, listen: false)
-          .updateEvent(_editedProduct.eventCode.toString(), _editedProduct);
+          .updateEvent(_editedProduct.id, _editedProduct);
     } else {
       provider.Provider.of<EventData>(context, listen: false)
           .addEvent(_editedProduct);
@@ -111,7 +112,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Product'),
+        title: Text('Add Product'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),

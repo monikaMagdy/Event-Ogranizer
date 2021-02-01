@@ -6,6 +6,7 @@ class EventData with ChangeNotifier {
   List<Event> eventDB = [
     Event(
       //0
+      id: 'e1',
       eventCode: 67869,
       eventName: 'Happiness',
       limitAttending: 100,
@@ -18,6 +19,7 @@ class EventData with ChangeNotifier {
     ),
     Event(
       //1
+      id: 'e2',
       eventCode: 09796,
       eventName: 'Buttercup',
       limitAttending: 50,
@@ -30,6 +32,7 @@ class EventData with ChangeNotifier {
     ),
     Event(
       //2
+      id: 'e3',
       eventCode: 76980,
       eventName: 'darkforest',
       limitAttending: 150,
@@ -51,7 +54,7 @@ class EventData with ChangeNotifier {
   }
 
   Event findById(String id) {
-    return eventDB.firstWhere((prod) => prod.eventCode == id);
+    return eventDB.firstWhere((prod) => prod.id == id);
   }
 
   void addEvent(Event event) {
@@ -69,7 +72,7 @@ class EventData with ChangeNotifier {
   }
 
   void updateEvent(String id, Event newEvent) {
-    final prodIndex = eventDB.indexWhere((prod) => prod.eventCode == id);
+    final prodIndex = eventDB.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       eventDB[prodIndex] = newEvent;
       notifyListeners();
@@ -77,7 +80,7 @@ class EventData with ChangeNotifier {
   }
 
   void deleteEvent(String id) {
-    eventDB.removeWhere((prod) => prod.eventCode == id);
+    eventDB.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }

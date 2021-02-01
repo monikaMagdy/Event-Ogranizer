@@ -11,10 +11,15 @@ import 'package:mobile_project/screens/orders_screen.dart';
 import 'package:mobile_project/screens/edit_product_screen.dart';
 import 'package:mobile_project/screens/user_products_screen.dart';
 import 'package:mobile_project/loginpage.dart';
+import 'package:firebase_core/firebase_core.dart';
 //import 'package:mobile_project/provider/userAddNotifier.dart';
 //import './screens/products_overview_screen.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 /*class MyApp extends StatelessWidget {
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class Event with ChangeNotifier {
   int eventCode;
+  String id;
   String eventName;
   int limitAttending;
   String address;
@@ -11,7 +12,9 @@ class Event with ChangeNotifier {
   int minimumCharge;
   bool isFavorite;
 
+  // ignore: sort_constructors_first
   Event({
+    this.id,
     this.eventCode,
     this.eventName,
     this.limitAttending,
@@ -22,6 +25,7 @@ class Event with ChangeNotifier {
     this.minimumCharge,
     this.isFavorite = false,
   });
+  // ignore: sort_constructors_first
   Event.name(eventName) {
     this.eventName = eventName;
   }
