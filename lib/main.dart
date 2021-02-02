@@ -1,9 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'
+    show
+        BuildContext,
+        Colors,
+        MaterialApp,
+        StatelessWidget,
+        ThemeData,
+        Widget,
+        WidgetsFlutterBinding,
+        runApp;
 import 'package:mobile_project/models/events.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/models/orders.dart';
 //import 'package:mobile_project/screens/User_HomeScreen.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
+import 'package:mobile_project/screens/User_HomeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_project/screens/product_detail_screen.dart';
 import 'package:mobile_project/screens/cart_screen.dart';
@@ -66,7 +76,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.cyan,
             fontFamily: 'Lato',
           ),
-          home: LoginForm(),
+          home: HomeScreen(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),

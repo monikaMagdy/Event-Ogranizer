@@ -1,18 +1,18 @@
-import 'package:flutter/foundation.dart';
-import "dart:async";
-
-class User with ChangeNotifier {
-  int id;
-  String firstName;
-  String lastName;
+class User {
+  final String id;
+  final String firstName;
+  final String lastName;
   //DateTime _birthdate;
-  String username;
-  String email;
-  String password;
-  String socialID;
-  String phoneNumber;
+  final String username;
+  final String email;
+  final String password;
+  final String socialID;
+  final String phoneNumber;
+
 //constructor
-  User(
+  // ignore: sort_constructors_first
+  User({
+    this.id,
     this.firstName,
     this.lastName,
     this.username,
@@ -20,5 +20,5 @@ class User with ChangeNotifier {
     this.password,
     this.socialID,
     this.phoneNumber,
-  );
+  });
 }
