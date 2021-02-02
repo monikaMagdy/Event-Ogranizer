@@ -241,43 +241,47 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ),
                   ),
                   Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(labelText: 'Image URL'),
-                      keyboardType: TextInputType.url,
-                      textInputAction: TextInputAction.done,
-                      controller: _imageUrlController,
-                      focusNode: _imageUrlFocusNode,
-                      onFieldSubmitted: (_) {
-                        _saveForm();
-                      },
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter an image URL.';
-                        }
-                        if (!value.startsWith('http') &&
-                            !value.startsWith('https')) {
-                          return 'Please enter a valid URL.';
-                        }
-                        if (!value.endsWith('.png') &&
-                            !value.endsWith('.jpg') &&
-                            !value.endsWith('.jpeg')) {
-                          return 'Please enter a valid image URL.';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _editedProduct = Event(
-                          eventName: value,
-                          minimumCharge: _editedProduct.minimumCharge,
-                          limitAttending: _editedProduct.limitAttending,
-                          date: _editedProduct.date,
-                          address: _editedProduct.address,
-                          dresscode: _editedProduct.dresscode,
-                          image: _editedProduct.image,
-                          eventCode: _editedProduct.eventCode,
-                          isFavorite: _editedProduct.isFavorite,
-                        );
-                      },
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(labelText: 'Image URL'),
+                          keyboardType: TextInputType.url,
+                          textInputAction: TextInputAction.done,
+                          controller: _imageUrlController,
+                          focusNode: _imageUrlFocusNode,
+                          onFieldSubmitted: (_) {
+                            _saveForm();
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter an image URL.';
+                            }
+                            if (!value.startsWith('http') &&
+                                !value.startsWith('https')) {
+                              return 'Please enter a valid URL.';
+                            }
+                            if (!value.endsWith('.png') &&
+                                !value.endsWith('.jpg') &&
+                                !value.endsWith('.jpeg')) {
+                              return 'Please enter a valid image URL.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _editedProduct = Event(
+                              eventName: value,
+                              minimumCharge: _editedProduct.minimumCharge,
+                              limitAttending: _editedProduct.limitAttending,
+                              date: _editedProduct.date,
+                              address: _editedProduct.address,
+                              dresscode: _editedProduct.dresscode,
+                              image: _editedProduct.image,
+                              eventCode: _editedProduct.eventCode,
+                              isFavorite: _editedProduct.isFavorite,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],

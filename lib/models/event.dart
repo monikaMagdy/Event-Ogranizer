@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class Event with ChangeNotifier {
@@ -11,6 +12,7 @@ class Event with ChangeNotifier {
   String dresscode;
   int minimumCharge;
   bool isFavorite;
+  final DocumentReference reference;
 
   // ignore: sort_constructors_first
   Event({
@@ -24,11 +26,10 @@ class Event with ChangeNotifier {
     this.dresscode,
     this.minimumCharge,
     this.isFavorite = false,
+    this.reference,
   });
   // ignore: sort_constructors_first
-  Event.name(eventName) {
-    this.eventName = eventName;
-  }
+
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
     notifyListeners();

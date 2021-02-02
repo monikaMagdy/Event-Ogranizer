@@ -1,146 +1,30 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class UserProfileSatetless extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'UserProfile',
-      //theme: ThemeData.dark(),
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[UserProfile()],
-          ),
-        ),
-      ),
-    );
+Future<bool> signIn(String email, String password) async {
+  try {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    return true;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('The password provided is too weak.');
+    } else if (e.code == 'email-already-in-use') {
+      print('The account already exists for that email. ');
+    }
+    return false;
+  } catch (e) {
+    print(e.toString());
+    return false;
   }
 }
 
-class UserProfile extends StatefulWidget {
-  @override
-  _UserProfileState createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
-  @override
-  Widget build(BuildContext context) {
-    Widget profile = Container(
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(20),
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: NetworkImage(
-                        'https://googleflutter.com/sample_image.jpg',
-                      ),
-                      fit: BoxFit.fill),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("First Name"),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "FirstName",
-                        counterText: '0 characters',
-                        //errorText: 'Error Text',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                    Text("Last Name"),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "LastName",
-                        counterText: '0 characters',
-                        //errorText: 'Error Text',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                    Text("Email"),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Email",
-                        counterText: '0 characters',
-                        //errorText: 'Error Text',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                    Text("Password"),
-                    TextFormField(
-                      obscureText: true,
-                      obscuringCharacter: "*",
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "FirstName",
-                        counterText: '0 characters',
-                        //errorText: 'Error Text',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                    Text("Password"),
-                    TextFormField(
-                      obscureText: true,
-                      obscuringCharacter: "*",
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Password",
-                        counterText: '0 characters',
-                        //errorText: 'Error Text',
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-    return MaterialApp(
-      title: 'SignUp',
-      //theme: ThemeData.dark(),
-      home: Scaffold(
-        body: profile,
-      ),
-    );
+Future<bool> register(String email, String password) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
   }
 }
