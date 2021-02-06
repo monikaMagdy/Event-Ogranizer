@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:mobile_project/provider/AddUserScreen.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
@@ -79,6 +80,7 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      focusColor: Colors.black,
                       //subtitle: Text((user.firstName).toString()),
                     );
                   },
@@ -231,11 +233,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-//userAddNotifier.userList[index].firstName,
-//userAddNotifier.userList[index].lastName,
-
-//userAddNotifier.userList[index].email,
-//userAddNotifier.userList[index].password,
-//userAddNotifier.userList[index].socialID,
-//userAddNotifier.userList[index].phoneNumber ,
+*/

@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   final String id;
   final String firstName;
   final String lastName;
@@ -11,7 +11,7 @@ class User {
 
 //constructor
   // ignore: sort_constructors_first
-  User({
+  UserModel({
     this.id,
     this.firstName,
     this.lastName,
