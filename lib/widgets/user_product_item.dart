@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 
 import '../screens/edit_product_screen.dart';
-import '../models/events.dart';
+import '../provider/events.dart';
 
 class UserProductItem extends StatelessWidget {
   final String id;
@@ -33,7 +33,7 @@ class UserProductItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
-                provider.Provider.of<EventData>(context, listen: false)
+                provider.Provider.of<Events>(context, listen: false)
                     .deleteEvent(id);
               },
               color: Theme.of(context).errorColor,

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart'
         Widget,
         WidgetsFlutterBinding,
         runApp;
-import 'package:mobile_project/models/events.dart';
+import 'package:mobile_project/provider/events.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/models/orders.dart';
 //import 'package:mobile_project/screens/User_HomeScreen.dart';
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           },
         ),
         ChangeNotifierProvider.value(
-          value: EventData(),
+          value: Events(),
         ),
         ChangeNotifierProvider.value(
           value: Cart(),
@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.cyan,
             fontFamily: 'Lato',
           ),
-          home: HomeScreen(),
+          home: EditProductScreen(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),

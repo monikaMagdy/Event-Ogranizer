@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 
-import '../models/events.dart';
+import '../provider/events.dart';
 import './product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
@@ -12,7 +12,7 @@ class ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = provider.Provider.of<EventData>(context);
+    final productsData = provider.Provider.of<Events>(context);
     final products = showFavs ? productsData.favoriteItems : productsData.items;
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),

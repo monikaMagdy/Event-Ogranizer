@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
 
-import '../models/events.dart';
+import '../provider/events.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/product-detail';
@@ -10,7 +10,7 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
-    final loadedProduct = provider.Provider.of<EventData>(
+    final loadedProduct = provider.Provider.of<Events>(
       context,
       listen: false,
     ).findById(productId);
