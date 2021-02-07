@@ -148,12 +148,6 @@ class MyCustomFormState extends State<MyCustomForm> {
                   eventName = eventname;
                 },
               ),
-              Text(
-                'Event Dress Code',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
               DropdownButtonFormField(
                 focusColor: Colors.indigo[200],
                 value: eventDresscode,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart'
         Widget,
         WidgetsFlutterBinding,
         runApp;
+import 'package:mobile_project/provider/AddUserScreen.dart';
 import 'package:mobile_project/provider/events.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/models/orders.dart';
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.cyan,
             fontFamily: 'Lato',
           ),
-          home: EditProductScreen(),
+          home: SignUpForm(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),

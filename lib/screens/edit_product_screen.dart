@@ -13,11 +13,21 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  String eventDresscode = 'classic';
+  DateTime _dateTime;
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+
+  final List<String> items = <String>[
+    'Classic',
+    'Halloween',
+    'Fancy Dress',
+    'semi-Fromal'
+  ];
+
   var _editedProduct = Event(
     id: null,
     eventCode: 0,
@@ -44,6 +54,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageUrl);
+    eventDresscode = items[0];
     super.initState();
   }
 
@@ -163,8 +174,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 child: ListView(
                   children: <Widget>[
                     TextFormField(
-                      initialValue: _initValues['title'],
-                      decoration: InputDecoration(labelText: 'Title'),
+                      initialValue: _initValues['eventName'],
+                      decoration: InputDecoration(
+                        labelText: 'eventName',
+                      ),
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_priceFocusNode);
@@ -178,81 +191,153 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Event(
                             eventName: value,
-                            minimumCharge: _editedProduct.minimumCharge,
                             limitAttending: _editedProduct.limitAttending,
-                            date: _editedProduct.date,
                             address: _editedProduct.address,
+                            date: _editedProduct.date,
                             dresscode: _editedProduct.dresscode,
+                            minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
                             eventCode: _editedProduct.eventCode,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
                     TextFormField(
-                      initialValue: _initValues['price'],
-                      decoration: InputDecoration(labelText: 'Price'),
-                      textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
-                      focusNode: _priceFocusNode,
+                      textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_descriptionFocusNode);
+                        FocusScope.of(context).requestFocus(_priceFocusNode);
                       },
+                      decoration: const InputDecoration(
+                        labelText: 'limitAttending',
+                      ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter a price.';
+                          return 'Please enter some text';
                         }
-                        if (double.tryParse(value) == null) {
-                          return 'Please enter a valid number.';
-                        }
-                        if (double.parse(value) <= 0) {
-                          return 'Please enter a number greater than zero.';
+                        if (value.length < 2 || value.length > 4) {
+                          return 'check capcity';
                         }
                         return null;
                       },
                       onSaved: (value) {
                         _editedProduct = Event(
                             eventName: value,
-                            minimumCharge: _editedProduct.minimumCharge,
                             limitAttending: _editedProduct.limitAttending,
-                            date: _editedProduct.date,
                             address: _editedProduct.address,
+                            date: _editedProduct.date,
                             dresscode: _editedProduct.dresscode,
+                            minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
                             eventCode: _editedProduct.eventCode,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
                     TextFormField(
-                      initialValue: _initValues['description'],
-                      decoration: InputDecoration(labelText: 'Description'),
-                      maxLines: 3,
-                      keyboardType: TextInputType.multiline,
-                      focusNode: _descriptionFocusNode,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_priceFocusNode);
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        hintText: 'Address',
+                      ),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return 'Please enter a description.';
-                        }
-                        if (value.length < 10) {
-                          return 'Should be at least 10 characters long.';
+                          return 'Please enter some text';
+                        } else if (!RegExp('^^[a-zA-Z0-9]').hasMatch(value)) {
+                          return 'Enter Valid Username';
                         }
                         return null;
                       },
                       onSaved: (value) {
                         _editedProduct = Event(
-                          eventName: value,
-                          minimumCharge: _editedProduct.minimumCharge,
-                          limitAttending: _editedProduct.limitAttending,
-                          date: _editedProduct.date,
-                          address: _editedProduct.address,
-                          dresscode: _editedProduct.dresscode,
-                          image: _editedProduct.image,
-                          eventCode: _editedProduct.eventCode,
-                          isFavorite: _editedProduct.isFavorite,
-                        );
+                            eventName: value,
+                            limitAttending: _editedProduct.limitAttending,
+                            address: _editedProduct.address,
+                            date: _editedProduct.date,
+                            dresscode: _editedProduct.dresscode,
+                            minimumCharge: _editedProduct.minimumCharge,
+                            image: _editedProduct.image,
+                            eventCode: _editedProduct.eventCode,
+                            isFavorite: _editedProduct.isFavorite);
                       },
                     ),
-                    Row(
+                    Text(
+                      _dateTime == null
+                          ? 'Select Your Event date'
+                          : _dateTime.toString(),
+                    ),
+                    RaisedButton(
+                        child: Text('Pick a Date'),
+                        color: Colors.indigo[200],
+                        onPressed: () {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2020),
+                                  lastDate: DateTime(2022))
+                              .then((date) {
+                            setState(() {
+                              _dateTime = date;
+                            });
+                          });
+                        }),
+                    DropdownButton(
+                      // decoration: InputDecoration(),
+                      focusColor: Colors.indigo[200],
+
+                      value: eventDresscode.isNotEmpty ? eventDresscode : null,
+                      onChanged: (var value) {
+                        setState(() {
+                          eventDresscode = value;
+                        });
+                      },
+
+                      /* onSaved: (value) {
+                        _editedProduct = Event(
+                            eventName: value,
+                            limitAttending: _editedProduct.limitAttending,
+                            address: _editedProduct.address,
+                            date: _editedProduct.date,
+                            dresscode: _editedProduct.dresscode,
+                            minimumCharge: _editedProduct.minimumCharge,
+                            image: _editedProduct.image,
+                            eventCode: _editedProduct.eventCode,
+                            isFavorite: _editedProduct.isFavorite);
+                      },*/
+                      items: items.map<DropdownMenuItem<String>>(
+                        (String dressCode) {
+                          return DropdownMenuItem<String>(
+                            child: Text(dressCode),
+                            value: dressCode,
+                          );
+                        },
+                      ).toList(),
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_priceFocusNode);
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'minimumCharge',
+                        counterText: '0 characters',
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        if (value.length < 2 || value.length > 4) {
+                          return 'check capcity';
+                        }
+                        return null;
+                      },
+                      onSaved: (capacity) {
+                        capacity = capacity;
+                      },
+                    ),
+                    /*Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Container(
@@ -276,21 +361,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                decoration:
-                                    InputDecoration(labelText: 'Image URL'),
-                                keyboardType: TextInputType.url,
-                                textInputAction: TextInputAction.done,
-                                controller: _imageUrlController,
-                                focusNode: _imageUrlFocusNode,
-                                onFieldSubmitted: (_) {
-                                  _saveForm();
-                                },
-                                validator: (value) {
+                        ),*/
+                    Expanded(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Image URL'),
+                            keyboardType: TextInputType.url,
+                            textInputAction: TextInputAction.done,
+                            controller: _imageUrlController,
+                            focusNode: _imageUrlFocusNode,
+                            onFieldSubmitted: (_) {
+                              _saveForm();
+                            },
+                            /* validator: (value) {
                                   if (value.isEmpty) {
                                     return 'Please enter an image URL.';
                                   }
@@ -304,31 +388,30 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     return 'Please enter a valid image URL.';
                                   }
                                   return null;
-                                },
-                                onSaved: (value) {
-                                  _editedProduct = Event(
-                                    eventName: value,
-                                    minimumCharge: _editedProduct.minimumCharge,
-                                    limitAttending:
-                                        _editedProduct.limitAttending,
-                                    date: _editedProduct.date,
-                                    address: _editedProduct.address,
-                                    dresscode: _editedProduct.dresscode,
-                                    image: _editedProduct.image,
-                                    eventCode: _editedProduct.eventCode,
-                                    isFavorite: _editedProduct.isFavorite,
-                                  );
-                                },
-                              ),
-                            ],
+                                },*/
+                            onSaved: (value) {
+                              _editedProduct = Event(
+                                eventName: value,
+                                minimumCharge: _editedProduct.minimumCharge,
+                                limitAttending: _editedProduct.limitAttending,
+                                date: _editedProduct.date,
+                                address: _editedProduct.address,
+                                dresscode: _editedProduct.dresscode,
+                                image: _editedProduct.image,
+                                eventCode: _editedProduct.eventCode,
+                                isFavorite: _editedProduct.isFavorite,
+                              );
+                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
+                // ],
               ),
             ),
+      //),
     );
   }
 }

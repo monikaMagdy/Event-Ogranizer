@@ -6,7 +6,7 @@ import '../models/event.dart';
 import 'package:flutter/foundation.dart';
 
 class Events extends ChangeNotifier {
-  final String urll = "https://event-ogranizer-default-rtdb.firebaseio.com";
+  String url = 'https://event-1d68b-default-rtdb.firebaseio.com/events.json';
   List<Event> eventDB = [];
   String authToken;
   String userId;
@@ -24,13 +24,10 @@ class Events extends ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://event-ogranizer-default-rtdb.firebaseio.com/events.json';
     try {
       final response = await http.get(url);
-      //print(json.decode(response.body));
       final dbData = json.decode(response.body) as Map<String, dynamic>;
-      final List<Event> dbProducts = [];
+      final dbProducts = <Event>[];
       dbData.forEach((key, data) {
         dbProducts.add(Event(
           id: key,
@@ -42,6 +39,7 @@ class Events extends ChangeNotifier {
         ));
       });
       eventDB = dbProducts;
+      print(eventDB);
       notifyListeners();
     } on Exception catch (e) {
       print(e.toString());
@@ -50,40 +48,44 @@ class Events extends ChangeNotifier {
   }
 
   Future<void> addEvent(Event product) async {
-    final url = '$urll/events.json?auth=$authToken';
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode({
-          'event Name': product.eventName,
-          'eventCode': product.eventCode,
-          'imageUrl': product.image,
-          'minimum Charge': product.minimumCharge,
-          'ownerId': userId,
-        }),
-      );
-      final newProduct = Event(
-        eventName: product.eventName,
-        eventCode: product.eventCode,
-        minimumCharge: product.minimumCharge,
-        image: product.image,
-        id: json.decode(response.body)['name'],
-      );
-      eventDB.add(newProduct);
-      notifyListeners();
-    } catch (error) {
-      print(error);
-      throw error;
-    }
+    return http
+        .post(url,
+            body: json.encode({
+              'eventName': product.eventName,
+              'limitAttending': product.limitAttending,
+              'address': product.address,
+              'date': product.date,
+              'dresscode': product.dresscode,
+              'minimumCharge': product.minimumCharge,
+              'image': product.image,
+            }))
+        .then((res) {
+      if (res.statusCode <= 400) {
+        final newProduct = Event(
+          eventName: product.eventName,
+          limitAttending: product.limitAttending,
+          address: product.address,
+          date: product.date,
+          image: product.image,
+          dresscode: product.dresscode,
+          minimumCharge: product.minimumCharge,
+          eventCode: json.decode(res.body)['eventName'],
+        );
+        eventDB.add(product);
+        notifyListeners();
+      }
+    });
   }
 
   Future<void> updateEvent(String id, Event newProduct) async {
+    String url =
+        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+
     final prodIndex = eventDB.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url = '$urll/events.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
-            'event Name': newProduct.eventName,
+            'eventName': newProduct.eventName,
             'eventCode': newProduct.eventCode,
             'imageUrl': newProduct.image,
             'minimum Charge': newProduct.minimumCharge,
@@ -96,17 +98,27 @@ class Events extends ChangeNotifier {
   }
 
   Future<void> deleteEvent(String id) async {
-    final url = '$urll/$id.json?auth=$authToken';
+    final String url =
+        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+
     final existingProductIndex = eventDB.indexWhere((prod) => prod.id == id);
     var existingProduct = eventDB[existingProductIndex];
-    eventDB.removeAt(existingProductIndex);
+    eventDB.remove(existingProductIndex);
+    await http.delete(url).then((res) {
+      if (res.statusCode >= 400) {
+        eventDB.insert(existingProductIndex, existingProduct);
+        notifyListeners();
+        print(res.statusCode);
+      }
+    });
     notifyListeners();
-    final response = await http.delete(url);
-    if (response.statusCode >= 400) {
-      eventDB.insert(existingProductIndex, existingProduct);
-      notifyListeners();
-      throw HttpException('Could not delete product.');
-    }
-    existingProduct = null;
+    // notifyListeners();
+    //final response = await http.delete(url);
+    //if (response.statusCode >= 400) {
+    //  eventDB.insert(existingProductIndex, existingProduct);
+    //  notifyListeners();
+    //  throw HttpException('Could not delete product.');
+    //}
+    //existingProduct = null;
   }
 }

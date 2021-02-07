@@ -138,9 +138,9 @@ class UserAddNotifer extends ChangeNotifier {
 
   Future<void> login(String email, String password) {
     return _authenticate(email, password);
-  }
+  }*/
 
-  /* Future<bool> autoLogin() async {
+  Future<bool> autoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('MIUShop_User')) {
       return false;
@@ -168,7 +168,7 @@ class UserAddNotifer extends ChangeNotifier {
     return true;
   }
 
-  Future<void> signup(User user) async {
+  /*Future<void> signup(User user) async {
     return http
         .post(url,
             body: json.encode({
@@ -242,7 +242,7 @@ class UserAddNotifer extends ChangeNotifier {
       userList[userIndex] = newUser;
       notifyListeners();
     }
-  }
+  }*/
 
   Future<void> logout() async {
     _token = null;
@@ -265,7 +265,7 @@ class UserAddNotifer extends ChangeNotifier {
     _authTimer = Timer(_expiryDate.difference(DateTime.now()), logout);
   }
 
-  /*void deleteUser(String id) {
+  /* void deleteUser(String id) {
     final String url =
         'https://event-ogranizer-default-rtdb.firebaseio.com/users/$id.json';
     final existingIndex = userList.indexWhere((element) => element.id == id);
@@ -279,5 +279,5 @@ class UserAddNotifer extends ChangeNotifier {
       }
     });
     notifyListeners();
-  }*/*/*/
+  }*/
 }
