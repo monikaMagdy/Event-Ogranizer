@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/provider/OrderProvider.dart';
 import 'package:provider/provider.dart' as provider;
 
 import '../models/cart.dart' show Cart;
@@ -42,7 +43,8 @@ class CartScreen extends StatelessWidget {
                   FlatButton(
                     child: Text('ORDER NOW'),
                     onPressed: () {
-                      provider.Provider.of<Orders>(context, listen: false)
+                      provider.Provider.of<OrderProvider>(context,
+                              listen: false)
                           .addOrder(
                         cart.items.values.toList(),
                         cart.totalAmount,

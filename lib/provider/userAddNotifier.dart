@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:collection';
+//import 'dart:collection';
 import 'dart:convert';
+//import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_project/models/httpException.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/userModel.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,7 @@ class UserAddNotifer extends ChangeNotifier {
   //
   List<UserModel> userList = [];
   final String url =
-      'https://event-ogranizer-default-rtdb.firebaseio.com/users.json';
+      'https://event-1d68b-default-rtdb.firebaseio.com/users.json';
 
   String _token;
   DateTime _expiryDate;
@@ -48,11 +49,16 @@ class UserAddNotifer extends ChangeNotifier {
     return UnmodifiableListView(userList);
   }*/
 
-  Future<bool> register(String email, String password) async {
+  Future<bool> register(
+      context, UserModel newuser, String email, String password) async {
     try {
-      var user = await FirebaseAuth.instance
+      var userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      print(user);
+      print('1');
+      print(userCredential.user.uid);
+      newuser.id = userCredential.user.uid;
+      await Provider.of<UserAddNotifer>(context, listen: false)
+          .signuprealtime(newuser);
       return true;
     } catch (e) {
       print(e);
@@ -168,10 +174,11 @@ class UserAddNotifer extends ChangeNotifier {
     return true;
   }
 
-  /*Future<void> signup(User user) async {
+  Future<void> signuprealtime(UserModel user) async {
     return http
         .post(url,
             body: json.encode({
+              'uID': user.id,
               'firstName': user.firstName,
               'LastName': user.lastName,
               'username': user.username,
@@ -182,7 +189,7 @@ class UserAddNotifer extends ChangeNotifier {
             }))
         .then((res) {
       if (res.statusCode <= 400) {
-        final newUser = User(
+        final newUser = UserModel(
             firstName: user.firstName,
             lastName: user.lastName,
             username: user.username,
@@ -190,7 +197,7 @@ class UserAddNotifer extends ChangeNotifier {
             password: user.password,
             socialID: user.socialID,
             phoneNumber: user.phoneNumber,
-            id: jsonDecode(res.body)['username']);
+            id: user.id);
         userList.add(newUser);
         notifyListeners();
       }
@@ -203,9 +210,9 @@ class UserAddNotifer extends ChangeNotifier {
     try {
       final response = await http.get(url);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
-      final dbUser = <User>[];
+      final dbUser = <UserModel>[];
       dbData.forEach((key, data) {
-        dbUser.add(User(
+        dbUser.add(UserModel(
             id: key,
             firstName: data['firstName'],
             lastName: data['lastName'],
@@ -223,8 +230,7 @@ class UserAddNotifer extends ChangeNotifier {
       rethrow;
     }
   }
-
-  Future<void> updateUser(String id, User newUser) async {
+  /*Future<void> updateUser(String id, User newUser) async {
     final url =
         'https://event-ogranizer-default-rtdb.firebaseio.com/users/$id.json';
     final userIndex = userList.indexWhere((user) => user.id == id);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/provider/OrderProvider.dart';
 import 'package:provider/provider.dart' as provider;
 
-import '../models/orders.dart' show Orders;
+import '../models/orders.dart' as order;
 import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
 
@@ -10,7 +11,7 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orderData = provider.Provider.of<Orders>(context);
+    final orderData = provider.Provider.of<OrderProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Orders'),

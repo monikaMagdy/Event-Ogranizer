@@ -31,10 +31,13 @@ class Events extends ChangeNotifier {
       dbData.forEach((key, data) {
         dbProducts.add(Event(
           id: key,
-          eventName: data['Event name'],
-          eventCode: data['Event code'],
-          minimumCharge: data['min charge'],
-          image: data['imageUrl'],
+          eventName: data['eventName'],
+          limitAttending: data['limitAttending'],
+          address: data['address'],
+          date: data['date'],
+          dresscode: data['dresscode'],
+          minimumCharge: data['minimumCharge'],
+          image: data['image'],
           isFavorite: data['isFavorite'],
         ));
       });
@@ -69,9 +72,9 @@ class Events extends ChangeNotifier {
           image: product.image,
           dresscode: product.dresscode,
           minimumCharge: product.minimumCharge,
-          eventCode: json.decode(res.body)['eventName'],
+          id: json.decode(res.body)['eventName'],
         );
-        eventDB.add(product);
+        eventDB.add(newProduct);
         notifyListeners();
       }
     });

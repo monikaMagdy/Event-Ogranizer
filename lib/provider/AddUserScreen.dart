@@ -9,6 +9,7 @@ import 'package:mobile_project/provider/userAddNotifier.dart';
 //import 'package:mobile_project/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
 
+// ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
 
 class LoginForm extends StatefulWidget {
@@ -81,7 +82,7 @@ class _LoginForm extends State<LoginForm> {
                       margin: EdgeInsets.only(top: 50),
                       child: Center(
                         child: Text(
-                          "Login",
+                          'Login',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 40,
@@ -130,6 +131,7 @@ class _SignUpForm extends State<SignUpForm> {
 
   //get operation => null;
 
+  // ignore: unused_field
   var _isLoading = false;
 
   /*String firstName;
@@ -200,20 +202,18 @@ class _SignUpForm extends State<SignUpForm> {
         print('login');
         // Navigator.pop(context);
       } else {
-        // await Provider.of<UserAddNotifer>(context, listen: false).signup(User(
-        //     firstName: _firstName.text,
-        //     lastName: _lastName.text,
-        //     username: _username.text,
-        //     email: _email.text,
-        //     password: _password.text,
-        //     socialID: _socialID.text,
-        //     phoneNumber: _phoneNumber.text));
+        var user = UserModel(
+            firstName: _firstName.text,
+            lastName: _lastName.text,
+            username: _username.text,
+            email: _email.text,
+            password: _password.text,
+            socialID: _socialID.text,
+            phoneNumber: _phoneNumber.text);
+
         await Provider.of<UserAddNotifer>(context, listen: false)
-            .register(_email.text, _password.text);
+            .register(context, user, _email.text, _password.text);
         print('signup');
-        print(
-          _email.text,
-        );
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';

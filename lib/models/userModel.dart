@@ -1,5 +1,5 @@
 class UserModel {
-  final String id;
+  String id;
   final String firstName;
   final String lastName;
   //DateTime _birthdate;

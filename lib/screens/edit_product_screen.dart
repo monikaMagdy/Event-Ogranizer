@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_project/screens/product_detail_screen.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
+import 'package:mobile_project/widgets/user_product_item.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:provider/provider.dart';
 
@@ -13,7 +16,7 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
-  String eventDresscode = 'classic';
+  String eventDresscode;
   DateTime _dateTime;
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
@@ -30,24 +33,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   var _editedProduct = Event(
     id: null,
-    eventCode: 0,
     eventName: '',
-    minimumCharge: 0,
     limitAttending: 0,
-    image: '',
     address: '',
     date: '',
     dresscode: '',
+    minimumCharge: 0,
+    image: '',
   );
   var _initValues = {
-    'eventCode': '',
+    'id': '',
     'eventName': '',
-    'minimumCharge': '',
     'limitAttending': '',
-    'image': '',
     'address': '',
     'date': '',
     'dresscode': '',
+    'minimumCharge': '',
+    'image': '',
   };
   var _isInit = true;
   var _isLoading = false;
@@ -66,13 +68,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
         _editedProduct = provider.Provider.of<Events>(context, listen: false)
             .findById(productId);
         _initValues = {
-          'event name': _editedProduct.eventName,
-          'limit attending people': _editedProduct.limitAttending.toString(),
+          'eventName': _editedProduct.eventName,
+          'limitAttending': _editedProduct.limitAttending.toString(),
           'address': _editedProduct.address,
           'date': _editedProduct.date,
-          'Minimum charge': _editedProduct.minimumCharge.toString(),
-          'imageUrl': _editedProduct.image,
-          'imageUrl': '',
+          'minimumCharge': _editedProduct.minimumCharge.toString(),
+          'image': '',
         };
         _imageUrlController.text = _editedProduct.image;
       }
@@ -130,7 +131,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               FlatButton(
                 child: Text('Okay'),
                 onPressed: () {
-                  Navigator.of(ctx).pop();
+                  Navigator.pop(ctx);
                 },
               )
             ],
@@ -147,8 +148,27 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {
       _isLoading = false;
     });
+
+    final productsData = provider.Provider.of<Events>(context);
+    padding:
+    EdgeInsets.all(8);
+    child:
+    ListView.builder(
+      itemCount: productsData.items.length,
+      itemBuilder: (_, i) => Column(
+        children: [
+          UserProductItem(
+            productsData.items[i].id,
+            productsData.items[i].eventName,
+            productsData.items[i].image,
+          ),
+          Divider(),
+        ],
+      ),
+    );
+    //Navigator.push(context,
+    //    MaterialPageRoute(builder: (context) => ProductsOverviewScreen()));
     Navigator.of(context).pop();
-    // Navigator.of(context).pop();
   }
 
   @override
@@ -197,11 +217,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             dresscode: _editedProduct.dresscode,
                             minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
-                            eventCode: _editedProduct.eventCode,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
                     TextFormField(
+                      initialValue: _initValues['limitAttending'],
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
@@ -221,25 +241,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Event(
-                            eventName: value,
-                            limitAttending: _editedProduct.limitAttending,
+                            eventName: _editedProduct.eventName,
+                            limitAttending: int.parse(value),
                             address: _editedProduct.address,
                             date: _editedProduct.date,
                             dresscode: _editedProduct.dresscode,
                             minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
-                            eventCode: _editedProduct.eventCode,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
                     TextFormField(
+                      initialValue: _initValues['address'],
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_priceFocusNode);
                       },
                       decoration: const InputDecoration(
                         labelText: 'Address',
-                        hintText: 'Address',
                       ),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -253,12 +272,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         _editedProduct = Event(
                             eventName: value,
                             limitAttending: _editedProduct.limitAttending,
-                            address: _editedProduct.address,
+                            address: value,
                             date: _editedProduct.date,
                             dresscode: _editedProduct.dresscode,
                             minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
-                            eventCode: _editedProduct.eventCode,
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
@@ -268,7 +286,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           : _dateTime.toString(),
                     ),
                     RaisedButton(
-                        child: Text('Pick a Date'),
+                        child: Text('date'),
                         color: Colors.indigo[200],
                         onPressed: () {
                           showDatePicker(
@@ -278,18 +296,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   lastDate: DateTime(2022))
                               .then((date) {
                             setState(() {
-                              _dateTime = date;
+                              onSaved:
+                              (value) {
+                                _editedProduct = Event(
+                                    eventName: _editedProduct.eventName,
+                                    limitAttending:
+                                        _editedProduct.limitAttending,
+                                    address: _editedProduct.address,
+                                    date: value,
+                                    dresscode: _editedProduct.dresscode,
+                                    minimumCharge: _editedProduct.minimumCharge,
+                                    image: _editedProduct.image,
+                                    isFavorite: _editedProduct.isFavorite);
+                              };
                             });
                           });
                         }),
                     DropdownButton(
                       // decoration: InputDecoration(),
                       focusColor: Colors.indigo[200],
-
                       value: eventDresscode.isNotEmpty ? eventDresscode : null,
                       onChanged: (var value) {
                         setState(() {
-                          eventDresscode = value;
+                          value = _dateTime;
                         });
                       },
 
@@ -302,7 +331,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             dresscode: _editedProduct.dresscode,
                             minimumCharge: _editedProduct.minimumCharge,
                             image: _editedProduct.image,
-                            eventCode: _editedProduct.eventCode,
+                          
                             isFavorite: _editedProduct.isFavorite);
                       },*/
                       items: items.map<DropdownMenuItem<String>>(
@@ -315,6 +344,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       ).toList(),
                     ),
                     TextFormField(
+                      initialValue: _initValues['minimumCharge'],
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_priceFocusNode);
@@ -333,8 +363,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         }
                         return null;
                       },
-                      onSaved: (capacity) {
-                        capacity = capacity;
+                      onSaved: (value) {
+                        _editedProduct = Event(
+                            eventName: _editedProduct.eventName,
+                            limitAttending: _editedProduct.limitAttending,
+                            address: _editedProduct.address,
+                            date: _editedProduct.date,
+                            dresscode: _editedProduct.dresscode,
+                            minimumCharge: int.parse(value),
+                            image: _editedProduct.image,
+                            isFavorite: _editedProduct.isFavorite);
                       },
                     ),
                     /*Row(
@@ -366,7 +404,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       child: Column(
                         children: [
                           TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
+                            decoration: InputDecoration(
+                              labelText: 'image',
+                            ),
                             keyboardType: TextInputType.url,
                             textInputAction: TextInputAction.done,
                             controller: _imageUrlController,
@@ -391,14 +431,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 },*/
                             onSaved: (value) {
                               _editedProduct = Event(
-                                eventName: value,
+                                eventName: _editedProduct.eventName,
                                 minimumCharge: _editedProduct.minimumCharge,
                                 limitAttending: _editedProduct.limitAttending,
                                 date: _editedProduct.date,
                                 address: _editedProduct.address,
                                 dresscode: _editedProduct.dresscode,
-                                image: _editedProduct.image,
-                                eventCode: _editedProduct.eventCode,
+                                image: value,
                                 isFavorite: _editedProduct.isFavorite,
                               );
                             },

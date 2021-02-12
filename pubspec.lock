@@ -387,6 +387,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.1"
+  latlng:
+    dependency: "direct main"
+    description:
+      name: latlng
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   latlong:
     dependency: "direct main"
     description:

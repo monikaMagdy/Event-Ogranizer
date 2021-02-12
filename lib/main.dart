@@ -8,23 +8,20 @@ import 'package:flutter/material.dart'
         Widget,
         WidgetsFlutterBinding,
         runApp;
-import 'package:mobile_project/provider/AddUserScreen.dart';
+import 'package:mobile_project/provider/OrderProvider.dart';
 import 'package:mobile_project/provider/events.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/models/orders.dart';
-//import 'package:mobile_project/screens/User_HomeScreen.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
-import 'package:mobile_project/screens/User_HomeScreen.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_project/screens/product_detail_screen.dart';
 import 'package:mobile_project/screens/cart_screen.dart';
 import 'package:mobile_project/screens/orders_screen.dart';
 import 'package:mobile_project/screens/edit_product_screen.dart';
 import 'package:mobile_project/screens/user_products_screen.dart';
-import 'package:mobile_project/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:mobile_project/provider/userAddNotifier.dart';
-//import './screens/products_overview_screen.dart';
+import 'package:mobile_project/provider/events.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +63,7 @@ class MyApp extends StatelessWidget {
           value: Cart(),
         ),
         ChangeNotifierProvider.value(
-          value: Orders(),
+          value: OrderProvider(),
         ),
       ],
       child: MaterialApp(
@@ -77,7 +74,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.cyan,
             fontFamily: 'Lato',
           ),
-          home: SignUpForm(),
+          home: ButtonMenu(),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
