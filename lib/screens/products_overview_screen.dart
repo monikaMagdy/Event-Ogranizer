@@ -213,6 +213,8 @@ import 'package:flutter/material.dart';
 //import 'package:mobile_project/create_event.dart';
 //import 'package:mobile_project/join_event.dart';
 import 'package:mobile_project/models/event.dart';
+import 'package:mobile_project/provider/events.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:mobile_project/screens/user_products_screen.dart';
 
 //import 'package:flutter/services.dart';
@@ -239,8 +241,8 @@ class ButtonMenu extends StatefulWidget {
 
 class _ButtonMenuState extends State<ButtonMenu> {
   final List<Widget> _children = [
-    EditProductScreen(),
     ProductsOverviewScreen(),
+    EditProductScreen(),
     UserProductsScreen(),
   ];
   int _currentIndex = 0;
@@ -292,18 +294,44 @@ class _ButtonMenuState extends State<ButtonMenu> {
 }
 
 class ProductsOverviewScreen extends StatefulWidget {
+  //final _userName;
+  //ProductsOverviewScreen(this._userName);
   @override
   _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Events>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event organizer'),
+        title: Text(' Events'),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
@@ -346,7 +374,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showOnlyFavorites),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(_showOnlyFavorites),
     );
   }
 }

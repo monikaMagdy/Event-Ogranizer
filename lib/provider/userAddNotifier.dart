@@ -36,6 +36,10 @@ class UserAddNotifer extends ChangeNotifier {
     return _email;
   }
 
+  String get username {
+    return _username;
+  }
+
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&

@@ -3,6 +3,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_project/models/httpException.dart';
+import 'package:mobile_project/screens/products_overview_screen.dart';
 import '../Animation.dart';
 import '../models/userModel.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
@@ -116,7 +117,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpForm extends State<SignUpForm> {
-  AuthMode _authMode = AuthMode.Signup;
+  AuthMode _authMode = AuthMode.Login;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
@@ -200,6 +201,7 @@ class _SignUpForm extends State<SignUpForm> {
         await Provider.of<UserAddNotifer>(context, listen: false)
             .login(_email.text, _password.text);
         print('login');
+
         // Navigator.pop(context);
       } else {
         var user = UserModel(
@@ -238,6 +240,8 @@ class _SignUpForm extends State<SignUpForm> {
     setState(() {
       _isLoading = false;
     });
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ButtonMenu()));
   }
 
   /* void performSignup() {

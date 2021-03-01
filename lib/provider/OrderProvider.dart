@@ -7,19 +7,19 @@ import '../models/orders.dart';
 import '../models/cart.dart';
 
 class OrderProvider with ChangeNotifier {
-  String url = 'https://event-1d68b-default-rtdb.firebaseio.com';
+  String url = 'https://event-1d68b-default-rtdb.firebaseio.com/';
   List<OrderItem> _orders = [];
   String authenToken;
   String userID;
-  OrderProvider();
-  //OrderProvider(this.authenToken, this.userID, this._orders);
+  //OrderProvider();
+  OrderProvider(this.authenToken, this.userID, this._orders);
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
   Future<void> fetchAndSetOrder() async {
-    final fetchURL = 'url/Order.json?auth=$authenToken';
+    final fetchURL = '$url/order/$userID.json?auth=$authenToken';
 
     final response = await http.get(fetchURL);
     final List<OrderItem> loadedOrder = [];

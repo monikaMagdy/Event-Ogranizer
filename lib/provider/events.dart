@@ -1,16 +1,20 @@
-import 'dart:collection';
+//import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
+//import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:mobile_project/models/httpException.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
 import '../models/event.dart';
 import 'package:flutter/foundation.dart';
 
 class Events extends ChangeNotifier {
-  String url = 'https://event-1d68b-default-rtdb.firebaseio.com/events.json';
+  static const url = 'https://event-1d68b-default-rtdb.firebaseio.com';
   List<Event> eventDB = [];
   String authToken;
   String userId;
-  Events();
+
+  Events(this.authToken, this.userId, this.eventDB);
+
   List<Event> get items {
     return [...eventDB];
   }
@@ -23,11 +27,20 @@ class Events extends ChangeNotifier {
     return eventDB.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts({bool fliterByUser = false}) async {
+    final filterString =
+        fliterByUser ? 'orderBy="owerID"&equalTo="$userId"' : '';
+    String fetchURL = '$url/events.josn?auth=$authToken&$filterString';
     try {
-      final response = await http.get(url);
+      final response = await http.get(fetchURL);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
-      final dbProducts = <Event>[];
+      if (dbData == null) {
+        return;
+      }
+      fetchURL = '$url/userFav/events.josn?auth=$authToken';
+      final faviroteResponse = await http.get(fetchURL);
+      final favoriteData = json.decode(faviroteResponse.body);
+      final List<Event> dbProducts = [];
       dbData.forEach((key, data) {
         dbProducts.add(Event(
           id: key,
@@ -38,58 +51,63 @@ class Events extends ChangeNotifier {
           dresscode: data['dresscode'],
           minimumCharge: data['minimumCharge'],
           image: data['image'],
-          isFavorite: data['isFavorite'],
+          isFavorite: favoriteData == null ? false : favoriteData[key] ?? false,
         ));
       });
       eventDB = dbProducts;
-      print(eventDB);
       notifyListeners();
-    } on Exception catch (e) {
-      print(e.toString());
+    } catch (e) {
       throw (e);
     }
   }
 
   Future<void> addEvent(Event product) async {
-    return http
-        .post(url,
-            body: json.encode({
-              'eventName': product.eventName,
-              'limitAttending': product.limitAttending,
-              'address': product.address,
-              'date': product.date,
-              'dresscode': product.dresscode,
-              'minimumCharge': product.minimumCharge,
-              'image': product.image,
-            }))
-        .then((res) {
-      if (res.statusCode <= 400) {
-        final newProduct = Event(
-          eventName: product.eventName,
-          limitAttending: product.limitAttending,
-          address: product.address,
-          date: product.date,
-          image: product.image,
-          dresscode: product.dresscode,
-          minimumCharge: product.minimumCharge,
-          id: json.decode(res.body)['eventName'],
-        );
-        eventDB.add(newProduct);
-        notifyListeners();
-      }
-    });
+    final addURL = '$url/events.json?auth=$authToken';
+    print('nnnnnnnnnnn');
+    try {
+      print('mama');
+      final resp = await http.post(
+        addURL,
+        body: json.encode({
+          'eventName': product.eventName,
+          'limitAttending': product.limitAttending,
+          'address': product.address,
+          'date': product.date,
+          'dresscode': product.dresscode,
+          'minimumCharge': product.minimumCharge,
+          'image': product.image,
+        }),
+      );
+      print('monica');
+      final newProduct = Event(
+        eventName: product.eventName,
+        limitAttending: product.limitAttending,
+        address: product.address,
+        date: product.date,
+        image: product.image,
+        dresscode: product.dresscode,
+        minimumCharge: product.minimumCharge,
+        id: json.decode(resp.body)['eventName'],
+      );
+      print('rola');
+      eventDB.add(newProduct);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw (error);
+    }
   }
 
   Future<void> updateEvent(String id, Event newProduct) async {
-    String url =
-        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+    // String url =
+    //     'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
 
     final prodIndex = eventDB.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      await http.patch(url,
+      final updateURL = '$url/events/$id.json?auth=$authToken';
+      await http.patch(updateURL,
           body: json.encode({
             'eventName': newProduct.eventName,
-            'eventCode': newProduct.eventCode,
             'imageUrl': newProduct.image,
             'minimum Charge': newProduct.minimumCharge,
           }));
@@ -101,20 +119,27 @@ class Events extends ChangeNotifier {
   }
 
   Future<void> deleteEvent(String id) async {
-    final String url =
-        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+    final deleteURL = '$url/$id.json?auth=$authToken';
 
     final existingProductIndex = eventDB.indexWhere((prod) => prod.id == id);
     var existingProduct = eventDB[existingProductIndex];
-    eventDB.remove(existingProductIndex);
-    await http.delete(url).then((res) {
+    eventDB.removeAt(existingProductIndex);
+    notifyListeners();
+    final resp = await http.delete(deleteURL);
+    if (resp.statusCode >= 400) {
+      eventDB.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('could not delete product. ');
+    }
+    existingProduct = null;
+    /* await http.delete(deleteURL).then((res) {
       if (res.statusCode >= 400) {
         eventDB.insert(existingProductIndex, existingProduct);
         notifyListeners();
         print(res.statusCode);
       }
-    });
-    notifyListeners();
+    });*/
+    // notifyListeners();
     // notifyListeners();
     //final response = await http.delete(url);
     //if (response.statusCode >= 400) {
@@ -123,5 +148,12 @@ class Events extends ChangeNotifier {
     //  throw HttpException('Could not delete product.');
     //}
     //existingProduct = null;
+  }
+
+  void takeToken(UserAddNotifer authen, List<Event> events) {
+    authToken = authen.token;
+    userId = authen.userID;
+    print('Events Take Token, userID:$userId');
+    eventDB = events;
   }
 }
