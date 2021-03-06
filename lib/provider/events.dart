@@ -6,14 +6,15 @@ import 'package:mobile_project/models/httpException.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
 import '../models/event.dart';
 import 'package:flutter/foundation.dart';
+//import 'package:provider/provider.dart' as provider;
 
 class Events extends ChangeNotifier {
   static const url = 'https://event-1d68b-default-rtdb.firebaseio.com';
   List<Event> eventDB = [];
   String authToken;
-  String userId;
-
-  Events(this.authToken, this.userId, this.eventDB);
+  String userID;
+  Events();
+  // Events(this.authToken, this.userID, this.eventDB);
 
   List<Event> get items {
     return [...eventDB];
@@ -29,15 +30,15 @@ class Events extends ChangeNotifier {
 
   Future<void> fetchAndSetProducts({bool fliterByUser = false}) async {
     final filterString =
-        fliterByUser ? 'orderBy="owerID"&equalTo="$userId"' : '';
-    String fetchURL = '$url/events.josn?auth=$authToken&$filterString';
+        fliterByUser ? 'orderBy="owerID"&equalTo="$userID"' : '';
+    String fetchURL = '$url/events.json?userID=$userID&$filterString';
     try {
       final response = await http.get(fetchURL);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
       if (dbData == null) {
         return;
       }
-      fetchURL = '$url/userFav/events.josn?auth=$authToken';
+      fetchURL = '$url/userFav/events.json?';
       final faviroteResponse = await http.get(fetchURL);
       final favoriteData = json.decode(faviroteResponse.body);
       final List<Event> dbProducts = [];
@@ -51,24 +52,28 @@ class Events extends ChangeNotifier {
           dresscode: data['dresscode'],
           minimumCharge: data['minimumCharge'],
           image: data['image'],
-          isFavorite: favoriteData == null ? false : favoriteData[key] ?? false,
+          isFavorite: favoriteData == null ? false : favoriteData[key] ?? true,
         ));
       });
+      debugPrint(dbProducts.toString());
       eventDB = dbProducts;
       notifyListeners();
     } catch (e) {
-      throw (e);
+      print(e);
     }
   }
 
-  Future<void> addEvent(Event product) async {
-    final addURL = '$url/events.json?auth=$authToken';
-    print('nnnnnnnnnnn');
+  Future<void> addEvent(Event product, String uID) async {
+    final addURL =
+        'https://event-1d68b-default-rtdb.firebaseio.com/events.json?userID=$uID';
+
+    print('userID in add Event Function $uID');
     try {
-      print('mama');
+      print(1);
       final resp = await http.post(
         addURL,
         body: json.encode({
+          'userID': uID,
           'eventName': product.eventName,
           'limitAttending': product.limitAttending,
           'address': product.address,
@@ -78,7 +83,7 @@ class Events extends ChangeNotifier {
           'image': product.image,
         }),
       );
-      print('monica');
+
       final newProduct = Event(
         eventName: product.eventName,
         limitAttending: product.limitAttending,
@@ -89,22 +94,24 @@ class Events extends ChangeNotifier {
         minimumCharge: product.minimumCharge,
         id: json.decode(resp.body)['eventName'],
       );
-      print('rola');
+
       eventDB.add(newProduct);
+
       notifyListeners();
     } catch (error) {
+      print(3);
       print(error);
       throw (error);
     }
   }
 
-  Future<void> updateEvent(String id, Event newProduct) async {
-    // String url =
-    //     'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+  Future<void> updateEvent(String id, Event newProduct, String uID) async {
+    String updateurl =
+        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
 
     final prodIndex = eventDB.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final updateURL = '$url/events/$id.json?auth=$authToken';
+      final updateURL = '$updateurl/events/$id.json?userID=$uID';
       await http.patch(updateURL,
           body: json.encode({
             'eventName': newProduct.eventName,
@@ -132,28 +139,12 @@ class Events extends ChangeNotifier {
       throw HttpException('could not delete product. ');
     }
     existingProduct = null;
-    /* await http.delete(deleteURL).then((res) {
-      if (res.statusCode >= 400) {
-        eventDB.insert(existingProductIndex, existingProduct);
-        notifyListeners();
-        print(res.statusCode);
-      }
-    });*/
-    // notifyListeners();
-    // notifyListeners();
-    //final response = await http.delete(url);
-    //if (response.statusCode >= 400) {
-    //  eventDB.insert(existingProductIndex, existingProduct);
-    //  notifyListeners();
-    //  throw HttpException('Could not delete product.');
-    //}
-    //existingProduct = null;
   }
 
   void takeToken(UserAddNotifer authen, List<Event> events) {
     authToken = authen.token;
-    userId = authen.userID;
-    print('Events Take Token, userID:$userId');
+    userID = authen.userID;
+    print('Events TakeToken, userID:$userID');
     eventDB = events;
   }
 }

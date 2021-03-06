@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_project/Services/flutterfire.dart';
 import 'package:mobile_project/screens/product_detail_screen.dart';
 import 'package:mobile_project/screens/products_overview_screen.dart';
 import 'package:mobile_project/widgets/user_product_item.dart';
@@ -105,7 +107,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  Future<void> _saveForm() async {
+  Future<void> _saveForm(String uID) async {
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
@@ -116,11 +118,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
     if (_editedProduct.id != null) {
       await Provider.of<Events>(context, listen: false)
-          .updateEvent(_editedProduct.id, _editedProduct);
+          .updateEvent(_editedProduct.id, _editedProduct, uID);
     } else {
       try {
         await Provider.of<Events>(context, listen: false)
-            .addEvent(_editedProduct);
+            .addEvent(_editedProduct, uID);
       } catch (error) {
         await showDialog(
           context: context,
@@ -138,18 +140,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         );
       }
-      // finally {
-      //   setState(() {
-      //     _isLoading = false;
-      //   });
-      //   Navigator.of(context).pop();
-      // }
     }
     setState(() {
       _isLoading = false;
     });
 
-    final productsData = provider.Provider.of<Events>(context);
+    final productsData = provider.Provider.of<Events>(context, listen: false);
     padding:
     EdgeInsets.all(8);
     child:
@@ -177,10 +173,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         title: Text('Add Product'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: _saveForm,
-          ),
+          StreamBuilder(
+              stream: AuthService().getUser(),
+              // ignore: missing_return
+
+              builder: (context, snapShot) {
+                return IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () async {
+                    await _saveForm(snapShot.data.uid);
+                  },
+                );
+              }),
         ],
       ),
       body: _isLoading
@@ -322,18 +326,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         });
                       },
 
-                      /* onSaved: (value) {
-                        _editedProduct = Event(
-                            eventName: value,
-                            limitAttending: _editedProduct.limitAttending,
-                            address: _editedProduct.address,
-                            date: _editedProduct.date,
-                            dresscode: _editedProduct.dresscode,
-                            minimumCharge: _editedProduct.minimumCharge,
-                            image: _editedProduct.image,
-                          
-                            isFavorite: _editedProduct.isFavorite);
-                      },*/
                       items: items.map<DropdownMenuItem<String>>(
                         (String dressCode) {
                           return DropdownMenuItem<String>(
@@ -347,7 +339,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       initialValue: _initValues['minimumCharge'],
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_priceFocusNode);
+                        // FocusScope.of(context).requestFocus)FocusNode);
                       },
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
@@ -375,31 +367,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
-                    /*Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          height: 100,
-                          margin: EdgeInsets.only(
-                            top: 8,
-                            right: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          child: _imageUrlController.text.isEmpty
-                              ? Text('Enter a URL')
-                              : FittedBox(
-                                  child: Image.network(
-                                    _imageUrlController.text,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),*/
                     Expanded(
                       child: Column(
                         children: [
@@ -411,24 +378,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             textInputAction: TextInputAction.done,
                             controller: _imageUrlController,
                             focusNode: _imageUrlFocusNode,
-                            onFieldSubmitted: (_) {
-                              _saveForm();
-                            },
-                            /* validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter an image URL.';
-                                  }
-                                  if (!value.startsWith('http') &&
-                                      !value.startsWith('https')) {
-                                    return 'Please enter a valid URL.';
-                                  }
-                                  if (!value.endsWith('.png') &&
-                                      !value.endsWith('.jpg') &&
-                                      !value.endsWith('.jpeg')) {
-                                    return 'Please enter a valid image URL.';
-                                  }
-                                  return null;
-                                },*/
+                            //onFieldSubmitted: (_) {
+                            //  _saveForm(SnapshotMetadata.);
+                            //},
                             onSaved: (value) {
                               _editedProduct = Event(
                                 eventName: _editedProduct.eventName,
@@ -447,10 +399,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                   ],
                 ),
-                // ],
               ),
             ),
-      //),
     );
   }
 }

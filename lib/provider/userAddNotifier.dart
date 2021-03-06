@@ -36,10 +36,6 @@ class UserAddNotifer extends ChangeNotifier {
     return _email;
   }
 
-  String get username {
-    return _username;
-  }
-
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
@@ -58,9 +54,9 @@ class UserAddNotifer extends ChangeNotifier {
     try {
       var userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      print('1');
       print(userCredential.user.uid);
-      newuser.id = userCredential.user.uid;
+      newuser.userID = userCredential.user.uid;
+
       await Provider.of<UserAddNotifer>(context, listen: false)
           .signuprealtime(newuser);
       return true;
@@ -70,23 +66,19 @@ class UserAddNotifer extends ChangeNotifier {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<User> login(String email, String password) async {
+    print('monica');
+    UserCredential authReuslt;
     try {
-      await FirebaseAuth.instance
+      authReuslt = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      print('1');
+      print('this is the user Infromation.. $authReuslt');
+    } on FirebaseAuthException catch (e) {}
+  }
 
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email. ');
-      }
-      return false;
-    } catch (e) {
-      print(e.toString());
-      return false;
-    }
+  Stream<User> getUser() {
+    return FirebaseAuth.instance.userChanges();
   }
 
   /*Future<void> _authenticate(
@@ -182,14 +174,14 @@ class UserAddNotifer extends ChangeNotifier {
     return http
         .post(url,
             body: json.encode({
-              'uID': user.id,
+              'uID': user.userID,
               'firstName': user.firstName,
               'LastName': user.lastName,
               'username': user.username,
               'email': user.email,
               'password': user.password,
               'socialID': user.socialID,
-              'phoneNumber': user.phoneNumber
+              'phoneNumber': user.phoneNumber,
             }))
         .then((res) {
       if (res.statusCode <= 400) {
@@ -201,7 +193,7 @@ class UserAddNotifer extends ChangeNotifier {
             password: user.password,
             socialID: user.socialID,
             phoneNumber: user.phoneNumber,
-            id: user.id);
+            userID: user.userID);
         userList.add(newUser);
         notifyListeners();
       }
@@ -217,7 +209,7 @@ class UserAddNotifer extends ChangeNotifier {
       final dbUser = <UserModel>[];
       dbData.forEach((key, data) {
         dbUser.add(UserModel(
-            id: key,
+            userID: key,
             firstName: data['firstName'],
             lastName: data['lastName'],
             username: data['username'],

@@ -210,6 +210,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:mobile_project/Services/flutterfire.dart';
 //import 'package:mobile_project/create_event.dart';
 //import 'package:mobile_project/join_event.dart';
 import 'package:mobile_project/models/event.dart';
@@ -222,7 +223,7 @@ import 'package:provider/provider.dart' as provider;
 import 'package:mobile_project/widgets/badge.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/screens/cart_screen.dart';
-
+import '../Services/flutterfire.dart';
 import 'package:mobile_project/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_project/widgets/products_grid.dart';
@@ -244,6 +245,7 @@ class _ButtonMenuState extends State<ButtonMenu> {
     ProductsOverviewScreen(),
     EditProductScreen(),
     UserProductsScreen(),
+    //AuthService().signOut();
   ];
   int _currentIndex = 0;
 

@@ -11,8 +11,8 @@ class OrderProvider with ChangeNotifier {
   List<OrderItem> _orders = [];
   String authenToken;
   String userID;
-  //OrderProvider();
-  OrderProvider(this.authenToken, this.userID, this._orders);
+  OrderProvider();
+  //OrderProvider(this.authenToken, this.userID, this._orders);
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -50,12 +50,14 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addOrder(List<CartItem> cartEvent, double total) async {
-    final addURL = 'url/Order/$userID.json?auth=$authenToken';
+  Future<void> addOrder(
+      List<CartItem> cartEvent, double total, String uID) async {
+    final addURL = '$url/Orders.json?userID=$uID';
     final timestamp = DateTime.now();
     final response = await http.post(
       addURL,
       body: json.encode({
+        'userID': uID,
         'amount': total,
         'dateTime': timestamp.toIso8601String(),
         'product': cartEvent
@@ -77,12 +79,5 @@ class OrderProvider with ChangeNotifier {
           products: cartEvent,
         ));
     notifyListeners();
-  }
-
-  void takeToken(UserAddNotifer auth, List<OrderItem> orders) {
-    authenToken = auth.token;
-    userID = auth.userID;
-    print('order takeToken, userID:$userID');
-    _orders = orders;
   }
 }

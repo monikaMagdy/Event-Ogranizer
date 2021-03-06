@@ -2,6 +2,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_project/Services/flutterfire.dart';
 import 'package:mobile_project/models/httpException.dart';
 import 'package:mobile_project/screens/products_overview_screen.dart';
 import '../Animation.dart';
@@ -198,8 +199,11 @@ class _SignUpForm extends State<SignUpForm> {
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<UserAddNotifer>(context, listen: false)
-            .login(_email.text, _password.text);
+
+        // await Provider.of<UserAddNotifer>(context, listen: false)
+        //     .login(_email.text, _password.text);
+        await AuthService().signIn(_email.text, _password.text);
+
         print('login');
 
         // Navigator.pop(context);
@@ -213,7 +217,7 @@ class _SignUpForm extends State<SignUpForm> {
             socialID: _socialID.text,
             phoneNumber: _phoneNumber.text);
 
-        await Provider.of<UserAddNotifer>(context, listen: false)
+        await AuthService()
             .register(context, user, _email.text, _password.text);
         print('signup');
       }
