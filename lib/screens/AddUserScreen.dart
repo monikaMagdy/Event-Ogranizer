@@ -2,15 +2,15 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+
 import 'package:mobile_project/models/httpException.dart';
-import 'package:mobile_project/screens/products_overview_screen.dart';
+import 'package:mobile_project/screens/Event_overview_screen.dart';
 import '../Animation.dart';
 import '../models/userModel.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
-//import 'package:mobile_project/screens/products_overview_screen.dart';
+
 import 'package:provider/provider.dart';
 
-// ignore: constant_identifier_names
 enum AuthMode { Signup, Login }
 
 class LoginForm extends StatefulWidget {
@@ -26,7 +26,7 @@ class _LoginForm extends State<LoginForm> {
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Container(
               height: 300,
@@ -96,8 +96,7 @@ class _LoginForm extends State<LoginForm> {
                 ],
               ),
             ),
-            Flexible(
-              flex: screenSize.width > 600 ? 2 : 1,
+            Expanded(
               child: SignUpForm(),
             ),
           ],
@@ -198,8 +197,11 @@ class _SignUpForm extends State<SignUpForm> {
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
+
         await Provider.of<UserAddNotifer>(context, listen: false)
             .login(_email.text, _password.text);
+        //await UserAddNotifer().signIn(_email.text, _password.text);
+
         print('login');
 
         // Navigator.pop(context);
@@ -213,7 +215,7 @@ class _SignUpForm extends State<SignUpForm> {
             socialID: _socialID.text,
             phoneNumber: _phoneNumber.text);
 
-        await Provider.of<UserAddNotifer>(context, listen: false)
+        await UserAddNotifer()
             .register(context, user, _email.text, _password.text);
         print('signup');
       }
@@ -248,7 +250,7 @@ class _SignUpForm extends State<SignUpForm> {
     setState(() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ProductsOverviewScreen()),
+        MaterialPageRoute(builder: (context) => EventsOverviewScreen()),
       );
     });
   }*/

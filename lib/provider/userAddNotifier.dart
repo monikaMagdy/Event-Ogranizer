@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 
 class UserAddNotifer extends ChangeNotifier {
   //
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   List<UserModel> userList = [];
   final String url =
       'https://event-1d68b-default-rtdb.firebaseio.com/users.json';
@@ -36,10 +38,6 @@ class UserAddNotifer extends ChangeNotifier {
     return _email;
   }
 
-  String get username {
-    return _username;
-  }
-
   String get token {
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
@@ -53,40 +51,58 @@ class UserAddNotifer extends ChangeNotifier {
     return UnmodifiableListView(userList);
   }*/
 
-  Future<bool> register(
+  Future<User> register(
       context, UserModel newuser, String email, String password) async {
     try {
-      var userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      print('1');
+      var userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
       print(userCredential.user.uid);
-      newuser.id = userCredential.user.uid;
+      newuser.userID = userCredential.user.uid;
+
       await Provider.of<UserAddNotifer>(context, listen: false)
           .signuprealtime(newuser);
-      return true;
     } catch (e) {
       print(e);
-      return false;
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<User> login(String email, String pass) async {
+    UserCredential authResult;
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      return true;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email. ');
-      }
-      return false;
+      authResult = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
     } catch (e) {
-      print(e.toString());
-      return false;
+      debugPrint('aaa : $e');
     }
+    final User user = authResult?.user;
+
+    if (user != null) {
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User currentUser = _auth.currentUser;
+      assert(user.uid == currentUser.uid);
+      print('signInWithGoogle succeeded: $user');
+      return user;
+    }
+
+    return null;
+  }
+
+  Future<bool> signOut() async {
+    await _auth.signOut();
+    print('User Signed Out');
+  }
+
+  Stream<User> getUser() {
+    return _auth.userChanges();
+  }
+
+  Stream<User> authState() {
+    return _auth.authStateChanges();
   }
 
   /*Future<void> _authenticate(
@@ -150,46 +166,46 @@ class UserAddNotifer extends ChangeNotifier {
     return _authenticate(email, password);
   }*/
 
-  Future<bool> autoLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('MIUShop_User')) {
-      return false;
-    }
-    final savedUserData =
-        json.decode(prefs.getString('MIUShop_User')) as Map<String, dynamic>;
-
-    _expiryDate = DateTime.parse(savedUserData['expiryDate']);
-    if (_expiryDate.isBefore(DateTime.now())) {
-      // ignore: prefer_single_quotes
-      print("Auto Login Date Check failed");
-      return false;
-    }
-
-    print('//Auto Login $savedUserData');
-    try {
-      _token = savedUserData['token'];
-      _userID = savedUserData['userId'];
-      notifyListeners();
-    } on Exception catch (e) {
-      print(e.toString());
-    }
-    print('Test: $_token');
-    print('_expiryDate: $_expiryDate');
-    return true;
-  }
+  //Future<bool> autoLogin() async {
+  //  final prefs = await SharedPreferences.getInstance();
+  //  if (!prefs.containsKey('MIUShop_User')) {
+  //    return false;
+  //  }
+  //  final savedUserData =
+  //      json.decode(prefs.getString('MIUShop_User')) as Map<String, dynamic>;
+//
+  //  _expiryDate = DateTime.parse(savedUserData['expiryDate']);
+  //  if (_expiryDate.isBefore(DateTime.now())) {
+  //    // ignore: prefer_single_quotes
+  //    print("Auto Login Date Check failed");
+  //    return false;
+  //  }
+//
+  //  print('//Auto Login $savedUserData');
+  //  try {
+  //    _token = savedUserData['token'];
+  //    _userID = savedUserData['userId'];
+  //    notifyListeners();
+  //  } on Exception catch (e) {
+  //    print(e.toString());
+  //  }
+  //  print('Test: $_token');
+  //  print('_expiryDate: $_expiryDate');
+  //  return true;
+  //}
 
   Future<void> signuprealtime(UserModel user) async {
     return http
         .post(url,
             body: json.encode({
-              'uID': user.id,
+              'uID': user.userID,
               'firstName': user.firstName,
               'LastName': user.lastName,
               'username': user.username,
               'email': user.email,
               'password': user.password,
               'socialID': user.socialID,
-              'phoneNumber': user.phoneNumber
+              'phoneNumber': user.phoneNumber,
             }))
         .then((res) {
       if (res.statusCode <= 400) {
@@ -201,7 +217,7 @@ class UserAddNotifer extends ChangeNotifier {
             password: user.password,
             socialID: user.socialID,
             phoneNumber: user.phoneNumber,
-            id: user.id);
+            userID: user.userID);
         userList.add(newUser);
         notifyListeners();
       }
@@ -209,32 +225,33 @@ class UserAddNotifer extends ChangeNotifier {
       print(error);
     });
   }
+}
 
-  Future<void> fetchAndSetUser() async {
-    try {
-      final response = await http.get(url);
-      final dbData = json.decode(response.body) as Map<String, dynamic>;
-      final dbUser = <UserModel>[];
-      dbData.forEach((key, data) {
-        dbUser.add(UserModel(
-            id: key,
-            firstName: data['firstName'],
-            lastName: data['lastName'],
-            username: data['username'],
-            email: data['email'],
-            password: data['password'],
-            socialID: data['socailID'],
-            phoneNumber: data['phoneNumber']));
-      });
-      userList = dbUser;
-      print(userList);
-      notifyListeners();
-    } on Exception catch (e) {
-      print(e.toString());
-      rethrow;
-    }
-  }
-  /*Future<void> updateUser(String id, User newUser) async {
+//Future<void> fetchAndSetUser() async {
+//  try {
+//    final response = await http.get(url);
+//    final dbData = json.decode(response.body) as Map<String, dynamic>;
+//    final dbUser = <UserModel>[];
+//    dbData.forEach((key, data) {
+//      dbUser.add(UserModel(
+//          userID: key,
+//          firstName: data['firstName'],
+//          lastName: data['lastName'],
+//          username: data['username'],
+//          email: data['email'],
+//          password: data['password'],
+//          socialID: data['socailID'],
+//          phoneNumber: data['phoneNumber']));
+//    });
+//    userList = dbUser;
+//    print(userList);
+//    notifyListeners();
+//  } on Exception catch (e) {
+//    print(e.toString());
+//    rethrow;
+//  }
+//}
+/*Future<void> updateUser(String id, User newUser) async {
     final url =
         'https://event-ogranizer-default-rtdb.firebaseio.com/users/$id.json';
     final userIndex = userList.indexWhere((user) => user.id == id);
@@ -254,28 +271,28 @@ class UserAddNotifer extends ChangeNotifier {
     }
   }*/
 
-  Future<void> logout() async {
-    _token = null;
-    _expiryDate = null;
-    _userID = null;
-    _email = null;
-    _username = null;
-    _authTimer?.cancel();
+//Future<void> logout() async {
+//  _token = null;
+//  _expiryDate = null;
+//  _userID = null;
+//  _email = null;
+//  _username = null;
+//  _authTimer?.cancel();
+//
+//  notifyListeners();
+//  final prefs = await SharedPreferences.getInstance();
+//  await prefs.clear();
+//}
 
-    notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-  }
+//void _autoLogout() {
+//  if (_authTimer != null) {
+//    _authTimer.cancel();
+//  }
+//  //final timeInSeconds = _expiryDate.difference(DateTime.now()).inSeconds;
+//  _authTimer = Timer(_expiryDate.difference(DateTime.now()), logout);
+//}
 
-  void _autoLogout() {
-    if (_authTimer != null) {
-      _authTimer.cancel();
-    }
-    //final timeInSeconds = _expiryDate.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(_expiryDate.difference(DateTime.now()), logout);
-  }
-
-  /* void deleteUser(String id) {
+/* void deleteUser(String id) {
     final String url =
         'https://event-ogranizer-default-rtdb.firebaseio.com/users/$id.json';
     final existingIndex = userList.indexWhere((element) => element.id == id);
@@ -290,4 +307,3 @@ class UserAddNotifer extends ChangeNotifier {
     });
     notifyListeners();
   }*/
-}

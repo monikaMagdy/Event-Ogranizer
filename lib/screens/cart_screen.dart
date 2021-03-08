@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:mobile_project/provider/OrderProvider.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:provider/provider.dart' as provider;
 
 import '../models/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
-import '../models/orders.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -14,7 +15,7 @@ class CartScreen extends StatelessWidget {
     final cart = provider.Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Cart'),
+        title: Text('My Cart'),
       ),
       body: Column(
         children: <Widget>[
@@ -40,19 +41,21 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  FlatButton(
-                    child: Text('ORDER NOW'),
-                    onPressed: () {
-                      provider.Provider.of<OrderProvider>(context,
-                              listen: false)
-                          .addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
-                      cart.clear();
-                    },
-                    textColor: Theme.of(context).primaryColor,
-                  )
+                  StreamBuilder(
+                      stream: UserAddNotifer().getUser(),
+                      builder: (context, snapShot) {
+                        return FlatButton(
+                          child: Text('ORDER NOW'),
+                          onPressed: () {
+                            provider.Provider.of<OrderProvider>(context,
+                                    listen: false)
+                                .addOrder(cart.items.values.toList(),
+                                    cart.totalAmount, snapShot.data.uid);
+                            cart.clear();
+                          },
+                          textColor: Theme.of(context).primaryColor,
+                        );
+                      })
                 ],
               ),
             ),

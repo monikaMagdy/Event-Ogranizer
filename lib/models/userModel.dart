@@ -1,5 +1,5 @@
 class UserModel {
-  String id;
+  String userID;
   final String firstName;
   final String lastName;
   //DateTime _birthdate;
@@ -12,7 +12,7 @@ class UserModel {
 //constructor
   // ignore: sort_constructors_first
   UserModel({
-    this.id,
+    this.userID,
     this.firstName,
     this.lastName,
     this.username,
