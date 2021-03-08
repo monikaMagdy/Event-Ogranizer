@@ -210,25 +210,18 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import 'package:mobile_project/Services/flutterfire.dart';
-//import 'package:mobile_project/create_event.dart';
-//import 'package:mobile_project/join_event.dart';
-import 'package:mobile_project/models/event.dart';
 import 'package:mobile_project/provider/events.dart';
-import 'package:mobile_project/provider/userAddNotifier.dart';
-import 'package:mobile_project/screens/user_products_screen.dart';
+import 'package:mobile_project/screens/user_events_screen.dart';
 
-//import 'package:flutter/services.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:mobile_project/widgets/badge.dart';
 import 'package:mobile_project/models/cart.dart';
 import 'package:mobile_project/screens/cart_screen.dart';
-import '../Services/flutterfire.dart';
 import 'package:mobile_project/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile_project/widgets/products_grid.dart';
+import 'package:mobile_project/widgets/event_grid.dart';
 
-import 'edit_product_screen.dart';
+import 'edit_event_screen.dart';
 
 enum FilterOptions {
   Favorites,
@@ -242,9 +235,9 @@ class ButtonMenu extends StatefulWidget {
 
 class _ButtonMenuState extends State<ButtonMenu> {
   final List<Widget> _children = [
-    ProductsOverviewScreen(),
-    EditProductScreen(),
-    UserProductsScreen(),
+    EventsOverviewScreen(),
+    EditEventScreen(),
+    UserEventsScreen(),
     //AuthService().signOut();
   ];
   int _currentIndex = 0;
@@ -295,14 +288,14 @@ class _ButtonMenuState extends State<ButtonMenu> {
   }
 }
 
-class ProductsOverviewScreen extends StatefulWidget {
+class EventsOverviewScreen extends StatefulWidget {
   //final _userName;
-  //ProductsOverviewScreen(this._userName);
+  //EventsOverviewScreen(this._userName);
   @override
-  _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
+  _EventsOverviewScreenState createState() => _EventsOverviewScreenState();
 }
 
-class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+class _EventsOverviewScreenState extends State<EventsOverviewScreen> {
   var _showOnlyFavorites = false;
   var _isInit = true;
   var _isLoading = false;
@@ -318,7 +311,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Events>(context).fetchAndSetProducts().then((_) {
+      Provider.of<Events>(context).fetchAndSetEvents().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -380,7 +373,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ProductsGrid(_showOnlyFavorites),
+          : EventsGrid(_showOnlyFavorites),
     );
   }
 }

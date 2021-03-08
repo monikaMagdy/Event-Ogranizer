@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
-
-import '../screens/edit_product_screen.dart';
+import '../screens/edit_event_screen.dart';
 import '../provider/events.dart';
 
-class UserProductItem extends StatelessWidget {
+class UserEventItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
 
-  UserProductItem(this.id, this.title, this.imageUrl);
+  UserEventItem(this.id, this.title, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +25,24 @@ class UserProductItem extends StatelessWidget {
               icon: Icon(Icons.edit),
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamed(EditProductScreen.routeName, arguments: id);
+                    .pushNamed(EditEventScreen.routeName, arguments: id);
               },
               color: Theme.of(context).primaryColor,
             ),
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.delete_outline),
               onPressed: () {
+                print('hello from user_event_item');
                 provider.Provider.of<Events>(context, listen: false)
                     .deleteEvent(id);
               },
               color: Theme.of(context).errorColor,
-            ),
+            )
           ],
         ),
       ),
     );
   }
 }
+
+class AuthS {}

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_project/Services/flutterfire.dart';
+
 import 'package:mobile_project/provider/OrderProvider.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:provider/provider.dart' as provider;
 
 import '../models/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
-//import '../models/orders.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -42,7 +42,7 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   StreamBuilder(
-                      stream: AuthService().getUser(),
+                      stream: UserAddNotifer().getUser(),
                       builder: (context, snapShot) {
                         return FlatButton(
                           child: Text('ORDER NOW'),

@@ -33,7 +33,7 @@ class OrderProvider with ChangeNotifier {
           id: orderID,
           amount: orderData['amount'],
           dateTime: DateTime.parse(orderData['dateTime']),
-          products: (orderData['product'] as List<dynamic>)
+          events: (orderData['event'] as List<dynamic>)
               .map(
                 (event) => CartItem(
                   id: event['id'],
@@ -60,7 +60,7 @@ class OrderProvider with ChangeNotifier {
         'userID': uID,
         'amount': total,
         'dateTime': timestamp.toIso8601String(),
-        'product': cartEvent
+        'Event': cartEvent
             .map((cEvent) => {
                   'id': cEvent.id,
                   'title': cEvent.title,
@@ -76,7 +76,7 @@ class OrderProvider with ChangeNotifier {
           id: json.decode(response.body)['name'],
           amount: total,
           dateTime: timestamp,
-          products: cartEvent,
+          events: cartEvent,
         ));
     notifyListeners();
   }

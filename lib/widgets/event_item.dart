@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/product_detail_screen.dart';
+import '../screens/Event_detail_screen.dart';
 import '../models/event.dart';
 import '../models/cart.dart';
 
-class ProductItem extends StatelessWidget {
+class EventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final event = Provider.of<Event>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final authen = Provider.of<UserAddNotifer>(context, listen: false);
-    print('ProductItem built again');
+    print('EventItem built again');
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed(
-              ProductDetailScreen.routeName,
+              EventDetailScreen.routeName,
               arguments: event.id,
             );
           },
@@ -31,13 +31,13 @@ class ProductItem extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           leading: Consumer<Event>(
-            builder: (ctx, product, _) => IconButton(
+            builder: (ctx, event, _) => IconButton(
               icon: Icon(
-                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                event.isFavorite ? Icons.favorite : Icons.favorite_border,
               ),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                product.toggleFavoriteStatus(authen.token, authen.userID);
+                event.toggleFavoriteStatus(authen.token, authen.userID);
               },
             ),
           ),

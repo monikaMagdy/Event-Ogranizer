@@ -3,21 +3,21 @@ import 'package:provider/provider.dart' as provider;
 
 import '../provider/events.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  static const routeName = '/product-detail';
+class EventDetailScreen extends StatelessWidget {
+  static const routeName = '/Event-detail';
 
   @override
   Widget build(BuildContext context) {
-    final productId =
+    final eventId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
-    final loadedProduct = provider.Provider.of<Events>(
+    final loadedEvent = provider.Provider.of<Events>(
       context,
       listen: false,
-    ).findById(productId);
-    print(productId);
+    ).findById(eventId);
+    print(eventId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(loadedProduct.eventName),
+        title: Text(loadedEvent.eventName),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -26,13 +26,13 @@ class ProductDetailScreen extends StatelessWidget {
               height: 300,
               width: double.infinity,
               child: Image.network(
-                loadedProduct.image,
+                loadedEvent.image,
                 fit: BoxFit.cover,
               ),
             ),
             SizedBox(height: 10),
             Text(
-              '\$${loadedProduct.minimumCharge}',
+              '\$${loadedEvent.minimumCharge}',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 20,
@@ -45,7 +45,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedProduct.address,
+                loadedEvent.address,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
@@ -54,7 +54,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedProduct.limitAttending.toString(),
+                loadedEvent.limitAttending.toString(),
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
@@ -63,7 +63,7 @@ class ProductDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedProduct.date,
+                loadedEvent.date,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),

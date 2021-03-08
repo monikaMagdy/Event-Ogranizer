@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/screens/AddUserScreen.dart';
 import 'package:mobile_project/provider/userAddNotifier.dart';
-import 'package:mobile_project/screens/products_overview_screen.dart';
+import 'package:mobile_project/screens/Event_overview_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

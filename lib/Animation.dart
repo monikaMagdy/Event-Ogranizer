@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 
-class FadeAnimation extends StatelessWidget {
+class FadeAnimation extends StatefulWidget {
   final double delay;
   final Widget child;
 
   FadeAnimation(this.delay, this.child);
 
+  @override
+  _FadeAnimationState createState() => _FadeAnimationState();
+}
+
+class _FadeAnimationState extends State<FadeAnimation> {
   @override
   Widget build(BuildContext context) {
     final tween = MultiTrackTween([
@@ -18,10 +23,10 @@ class FadeAnimation extends StatelessWidget {
     ]);
 
     return ControlledAnimation(
-      delay: Duration(milliseconds: (500 * delay).round()),
+      delay: Duration(milliseconds: (500 * widget.delay).round()),
       duration: tween.duration,
       tween: tween,
-      child: child,
+      child: widget.child,
       builderWithChild: (context, child, animation) => Opacity(
         opacity: animation["opacity"],
         child: Transform.translate(

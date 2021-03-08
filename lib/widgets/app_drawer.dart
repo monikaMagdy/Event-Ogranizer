@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_project/Services/flutterfire.dart';
-
+import 'package:mobile_project/provider/userAddNotifier.dart';
+import 'package:mobile_project/screens/user_events_screen.dart';
 import '../screens/orders_screen.dart';
-import '../screens/user_products_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -37,7 +36,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('Manage Events'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(UserProductsScreen.routeName);
+                  .pushReplacementNamed(UserEventsScreen.routeName);
             },
           ),
           Divider(),
@@ -46,7 +45,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('Sign Out'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(AuthService().signOut().toString());
+                  .pushReplacementNamed(UserAddNotifer().signOut().toString());
             },
           ),
         ],

@@ -17,15 +17,16 @@ import 'package:mobile_project/provider/events.dart';
 import 'package:mobile_project/models/cart.dart';
 
 import 'package:mobile_project/provider/userAddNotifier.dart';
+import 'package:mobile_project/screens/AddUserScreen.dart';
+import 'package:mobile_project/screens/push_notification_screen.dart';
 
 import 'package:mobile_project/screens/splashScreen.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile_project/screens/product_detail_screen.dart';
+import 'package:mobile_project/screens/Event_detail_screen.dart';
 import 'package:mobile_project/screens/cart_screen.dart';
 import 'package:mobile_project/screens/orders_screen.dart';
-import 'package:mobile_project/screens/edit_product_screen.dart';
-import 'package:mobile_project/screens/user_products_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile_project/screens/edit_event_screen.dart';
+import 'package:mobile_project/screens/user_events_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,13 +85,13 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
-          home: SplashScreen(),
+          home: LoginForm(),
           routes: {
-            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            EventDetailScreen.routeName: (ctx) => EventDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
-            UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-            EditProductScreen.routeName: (ctx) => EditProductScreen(),
+            UserEventsScreen.routeName: (ctx) => UserEventsScreen(),
+            EditEventScreen.routeName: (ctx) => EditEventScreen(),
           },
           debugShowCheckedModeBanner: false,
         ),

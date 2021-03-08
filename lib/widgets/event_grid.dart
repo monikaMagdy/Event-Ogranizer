@@ -3,25 +3,25 @@ import 'package:provider/provider.dart' as provider;
 import 'package:provider/provider.dart';
 
 import '../provider/events.dart';
-import './product_item.dart';
+import 'event_item.dart';
 
-class ProductsGrid extends StatelessWidget {
+class EventsGrid extends StatelessWidget {
   final bool showFavs;
 
   // ignore: sort_constructors_first
-  ProductsGrid(this.showFavs);
+  EventsGrid(this.showFavs);
 
   @override
   Widget build(BuildContext context) {
-    final productsData = provider.Provider.of<Events>(context, listen: false);
-    debugPrint("data: ${productsData}");
-    final products = showFavs ? productsData.favoriteItems : productsData.items;
+    final eventsData = provider.Provider.of<Events>(context, listen: false);
+    debugPrint('data: $eventsData');
+    final events = showFavs ? eventsData.favoriteItems : eventsData.items;
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
-      itemCount: products.length,
+      itemCount: events.length,
       itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-        value: products[i],
-        child: ProductItem(),
+        value: events[i],
+        child: EventItem(),
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
