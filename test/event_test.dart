@@ -8,23 +8,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile_project/main.dart';
+import 'package:mobile_project/models/event.dart';
 import 'package:mobile_project/provider/events.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  group('App provider tests', () {
+    var events = Events();
+    test('A new item should be added', () {
+      var data = Event(
+        id: '1',
+        eventName: 'helllo',
+        address: 'korba',
+        date: '2-2-2222',
+        image: 'www.google.com',
+        dresscode: 'classic',
+        limitAttending: 30,
+        minimumCharge: 90,
+      );
+      events.addEvent(data, "hjghghjghghjbhj");
+      expect(events.eventDB.contains(data), true);
+    });
   });
 }
