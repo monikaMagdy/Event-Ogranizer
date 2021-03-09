@@ -242,8 +242,7 @@ class _SignUpForm extends State<SignUpForm> {
     setState(() {
       _isLoading = false;
     });
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ButtonMenu()));
+    await Navigator.pop(context);
   }
 
   /* void performSignup() {

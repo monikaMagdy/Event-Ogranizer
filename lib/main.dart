@@ -82,10 +82,10 @@ class MyApp extends StatelessWidget {
           title: 'eventOrganizer',
           theme: ThemeData(
             primarySwatch: Colors.deepPurple,
-            accentColor: Colors.deepOrange,
+            accentColor: Colors.purpleAccent,
             fontFamily: 'Lato',
           ),
-          home: LoginForm(),
+          home: SplashScreen(),
           routes: {
             EventDetailScreen.routeName: (ctx) => EventDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
