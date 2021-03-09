@@ -299,20 +299,42 @@ class _EditEventScreenState extends State<EditEventScreen> {
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime(2020),
                                   lastDate: DateTime(2022))
-                              .then((date) {
-                            setState(() {
-                              _dateTime = date;
-                            });
-                          });
+                              .then(
+                            (value) {
+                              setState(() {
+                                _dateTime = value;
+                              });
+                              _editedEvent = Event(
+                                  id: _editedEvent.id,
+                                  eventName: _editedEvent.eventName,
+                                  limitAttending: _editedEvent.limitAttending,
+                                  address: _editedEvent.address,
+                                  date: value.toString(),
+                                  dresscode: _editedEvent.dresscode,
+                                  minimumCharge: _editedEvent.minimumCharge,
+                                  image: _editedEvent.image,
+                                  isFavorite: _editedEvent.isFavorite);
+                            },
+                          );
                         }),
                     DropdownButton(
                       // decoration: InputDecoration(),
                       focusColor: Colors.indigo[200],
                       value: eventDresscode.isNotEmpty ? eventDresscode : null,
-                      onChanged: (var value) {
+                      onChanged: (value) {
                         setState(() {
                           eventDresscode = value;
                         });
+                        _editedEvent = Event(
+                            id: _editedEvent.id,
+                            eventName: _editedEvent.eventName,
+                            limitAttending: _editedEvent.limitAttending,
+                            address: _editedEvent.address,
+                            date: _editedEvent.date,
+                            dresscode: value,
+                            minimumCharge: _editedEvent.minimumCharge,
+                            image: _editedEvent.image,
+                            isFavorite: _editedEvent.isFavorite);
                       },
 
                       items: items.map<DropdownMenuItem<String>>(

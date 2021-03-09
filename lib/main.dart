@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato',
           ),
-          home: LoginForm(),
+          home: SplashScreen(),
           routes: {
             EventDetailScreen.routeName: (ctx) => EventDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
