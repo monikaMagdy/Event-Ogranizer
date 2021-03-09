@@ -200,9 +200,6 @@ class _SignUpForm extends State<SignUpForm> {
 
         await Provider.of<UserAddNotifer>(context, listen: false)
             .login(_email.text, _password.text);
-        //await UserAddNotifer().signIn(_email.text, _password.text);
-
-        print('login');
 
         // Navigator.pop(context);
       } else {
@@ -217,7 +214,6 @@ class _SignUpForm extends State<SignUpForm> {
 
         await UserAddNotifer()
             .register(context, user, _email.text, _password.text);
-        print('signup');
       }
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
@@ -276,7 +272,6 @@ class _SignUpForm extends State<SignUpForm> {
                       labelText: 'First Name',
                       border: OutlineInputBorder(),
                       focusColor: Colors.black,
-                      counterText: '0 characters',
                     ),
                     validator: (value) {
                       if (value.isEmpty) {
@@ -284,11 +279,10 @@ class _SignUpForm extends State<SignUpForm> {
                       } else if (value.length < 3) {
                         return 'first name too short';
                       } else if (!RegExp('^[a-zA-Z]').hasMatch(value)) {
-                        return 'Enter Valid Username';
+                        return 'Enter Valid FirstName';
                       }
                       return null;
                     },
-                    //onSaved: (_firstname) => firstName = _firstName,
                   ),
                 //##########################################
                 if (_authMode == AuthMode.Signup)
@@ -443,9 +437,9 @@ class _SignUpForm extends State<SignUpForm> {
                       }
                       return null;
                     },
-                    onSaved: (phoneNumber) {
-                      phoneNumber = phoneNumber;
-                    },
+                    //onSaved: (phoneNumber) {
+                    //  phoneNumber = phoneNumber;
+                    //},
                   ),
                 //if (_authMode == AuthMode.Login)
                 /*FlatButton(

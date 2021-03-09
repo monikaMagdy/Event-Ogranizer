@@ -17,9 +17,6 @@ import 'package:mobile_project/provider/events.dart';
 import 'package:mobile_project/models/cart.dart';
 
 import 'package:mobile_project/provider/userAddNotifier.dart';
-import 'package:mobile_project/screens/AddUserScreen.dart';
-import 'package:mobile_project/screens/push_notification_screen.dart';
-
 import 'package:mobile_project/screens/splashScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_project/screens/Event_detail_screen.dart';
