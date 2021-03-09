@@ -132,6 +132,7 @@ class Events extends ChangeNotifier {
   }
 
   Future<String> deleteEvent(String id) async {
+    print('final delete function for event');
     final deleteURL =
         'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
     print('event_id: $id');
