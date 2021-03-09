@@ -271,7 +271,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       },
                       onSaved: (value) {
                         _editedEvent = Event(
-                            eventName: value,
+                            eventName: _editedEvent.eventName,
                             limitAttending: _editedEvent.limitAttending,
                             address: value,
                             date: _editedEvent.date,
@@ -283,8 +283,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     ),
                     Text(
                       _dateTime == null
-                          ? _dateTime.toString()
-                          : 'Select Your Event date',
+                          ? 'Select Your Event date'
+                          : _dateTime.toString(),
                     ),
                     RaisedButton(
                         child: Text('date'),
