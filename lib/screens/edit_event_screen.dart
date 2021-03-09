@@ -113,6 +113,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     setState(() {
       _isLoading = true;
     });
+    debugPrint('edit' + _editedEvent.toString());
     if (_editedEvent.id != null) {
       await Provider.of<Events>(context, listen: false)
           .updateEvent(_editedEvent.id, _editedEvent, uID);
@@ -211,6 +212,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       },
                       onSaved: (value) {
                         _editedEvent = Event(
+                            id: _editedEvent.id,
                             eventName: value,
                             limitAttending: _editedEvent.limitAttending,
                             address: _editedEvent.address,
@@ -242,6 +244,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       },
                       onSaved: (value) {
                         _editedEvent = Event(
+                            id: _editedEvent.id,
                             eventName: _editedEvent.eventName,
                             limitAttending: int.parse(value),
                             address: _editedEvent.address,
@@ -271,6 +274,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       },
                       onSaved: (value) {
                         _editedEvent = Event(
+                            id: _editedEvent.id,
                             eventName: _editedEvent.eventName,
                             limitAttending: _editedEvent.limitAttending,
                             address: value,
@@ -342,6 +346,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       },
                       onSaved: (value) {
                         _editedEvent = Event(
+                            id: _editedEvent.id,
                             eventName: _editedEvent.eventName,
                             limitAttending: _editedEvent.limitAttending,
                             address: _editedEvent.address,
@@ -368,6 +373,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
                             //},
                             onSaved: (value) {
                               _editedEvent = Event(
+                                id: _editedEvent.id,
                                 eventName: _editedEvent.eventName,
                                 minimumCharge: _editedEvent.minimumCharge,
                                 limitAttending: _editedEvent.limitAttending,

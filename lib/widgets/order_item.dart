@@ -2,19 +2,22 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_project/models/orders.dart';
+import 'package:provider/provider.dart';
 
 import '../models/orders.dart' as ord;
+import 'package:mobile_project/provider/OrderProvider.dart';
 
-class OrderItem extends StatefulWidget {
-  final ord.OrderItem order;
+class OrderItemWidget extends StatefulWidget {
+  final OrderItem order;
 
-  OrderItem(this.order);
+  OrderItemWidget(this.order);
 
   @override
   _OrderItemState createState() => _OrderItemState();
 }
 
-class _OrderItemState extends State<OrderItem> {
+class _OrderItemState extends State<OrderItemWidget> {
   var _expanded = false;
 
   @override
@@ -24,7 +27,8 @@ class _OrderItemState extends State<OrderItem> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text('\$${widget.order.amount}'),
+            title: Text(
+                '\$${widget.order.amount} ${Provider.of<OrderProvider>(context, listen: false).userID.substring(0, 5)}'),
             subtitle: Text(
               DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
             ),

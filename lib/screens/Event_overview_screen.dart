@@ -223,11 +223,6 @@ import 'package:mobile_project/widgets/event_grid.dart';
 
 import 'edit_event_screen.dart';
 
-enum FilterOptions {
-  Favorites,
-  All,
-}
-
 class ButtonMenu extends StatefulWidget {
   @override
   _ButtonMenuState createState() => _ButtonMenuState();
@@ -286,6 +281,11 @@ class _ButtonMenuState extends State<ButtonMenu> {
       ),
     );
   }
+}
+
+enum FilterOptions {
+  Favorites,
+  All,
 }
 
 class EventsOverviewScreen extends StatefulWidget {
@@ -352,7 +352,7 @@ class _EventsOverviewScreenState extends State<EventsOverviewScreen> {
               ),
             ],
           ),
-          provider.Consumer<Cart>(
+          Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
               child: ch,
               value: cart.itemCount.toString(),

@@ -37,7 +37,7 @@ class EventItem extends StatelessWidget {
               ),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                event.toggleFavoriteStatus(authen.token, authen.userID);
+                event.toggleFavoriteStatus(authen.token, event.id);
               },
             ),
           ),
@@ -50,8 +50,8 @@ class EventItem extends StatelessWidget {
               Icons.shopping_cart,
             ),
             onPressed: () {
-              cart.addItem(event.id.toString(), event.minimumCharge.toDouble(),
-                  event.eventName);
+              cart.addItem(
+                  event.id, event.minimumCharge.toDouble(), event.eventName);
               Scaffold.of(context).hideCurrentSnackBar();
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -62,7 +62,7 @@ class EventItem extends StatelessWidget {
                   action: SnackBarAction(
                     label: 'UNDO',
                     onPressed: () {
-                      cart.removeSingleItem(event.id.toString());
+                      cart.removeSingleItem(event.id);
                     },
                   ),
                 ),

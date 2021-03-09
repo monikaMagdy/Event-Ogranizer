@@ -110,8 +110,8 @@ class Events extends ChangeNotifier {
   Future<void> updateEvent(String id, Event newEvent, String uID) async {
     String updateurl =
         'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
-
     final eventIndex = eventDB.indexWhere((event) => event.id == id);
+    debugPrint('index' + id.toString());
     if (eventIndex >= 0) {
       //final updateURL = '$updateurl/events/$id.json?userID=$uID';
       await http.patch(updateurl,
@@ -125,6 +125,7 @@ class Events extends ChangeNotifier {
             'image': newEvent.image,
           }));
       eventDB[eventIndex] = newEvent;
+      print("goooooooo");
       notifyListeners();
     } else {
       print('...');

@@ -94,25 +94,16 @@ class Event with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus(String token, String userID) async {
+  Future<void> toggleFavoriteStatus(String token, String id) async {
     final state = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final toggleURL = '$url/userFav/$userID/$id.json?auth=$token';
-    try {
-      final response = await http.put(
-        url,
-        body: json.encode(isFavorite),
-      );
-      print('1 response.statusCode ${response.statusCode}');
-      if (response.statusCode >= 400) {
-        _setFavValue(state);
-        print('2 response.statusCode ${response.statusCode}');
-      }
-    } catch (error) {
-      _setFavValue(state);
-      print('error: ${error.toString()}');
-    }
+    String updateurl =
+        'https://event-1d68b-default-rtdb.firebaseio.com/events/$id.json';
+    // final eventIndex = eventDB.indexWhere((event) => event.id == id);
+    debugPrint('index' + id.toString());
+    await http.patch(updateurl, body: json.encode({'isFavorite': isFavorite}));
+    notifyListeners();
   }
 
   String toJson() => json.encode(toMap());

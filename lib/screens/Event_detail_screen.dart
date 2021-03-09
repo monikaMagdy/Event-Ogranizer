@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
-
 import '../provider/events.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -50,6 +49,9 @@ class EventDetailScreen extends StatelessWidget {
                 softWrap: true,
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
@@ -58,6 +60,9 @@ class EventDetailScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
+            ),
+            SizedBox(
+              height: 10,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),

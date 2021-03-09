@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as provider;
+import 'package:provider/provider.dart';
 
 import '../provider/events.dart';
 import '../widgets/user_event_item.dart';
@@ -8,6 +9,10 @@ import 'edit_event_screen.dart';
 
 class UserEventsScreen extends StatelessWidget {
   static const routeName = '/user-Events';
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Events>(context, listen: false)
+        .fetchAndSetEvents(fliterByUser: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +30,36 @@ class UserEventsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: Padding(
-        padding: EdgeInsets.all(8),
-        child: ListView.builder(
-          itemCount: eventsData.items.length,
-          itemBuilder: (_, i) => Column(
-            children: [
-              UserEventItem(
-                eventsData.items[i].id,
-                eventsData.items[i].eventName,
-                eventsData.items[i].image,
-              ),
-              Divider(),
-            ],
-          ),
-        ),
-      ),
+      body: FutureBuilder<Object>(
+          future: _refreshProducts(context),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => _refreshProducts(context),
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Consumer<Events>(
+                        builder: (context, eventsData, child) =>
+                            ListView.builder(
+                          itemCount: eventsData.items.length,
+                          itemBuilder: (_, i) => Column(
+                            children: [
+                              UserEventItem(
+                                eventsData.items[i].id,
+                                eventsData.items[i].eventName,
+                                eventsData.items[i].image,
+                              ),
+                              Divider(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+          }),
     );
   }
 }
