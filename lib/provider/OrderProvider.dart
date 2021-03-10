@@ -17,8 +17,8 @@ class OrderProvider with ChangeNotifier {
     return [..._orders];
   }
 
-  Future<void> fetchAndSetOrder() async {
-    final fetchURL = '$url/order/$userID.json?auth=$authenToken';
+  Future<void> fetchAndSetOrder(String userID) async {
+    final fetchURL = '$url/Orders.json?userID=$userID';
 
     final response = await http.get(fetchURL);
     final List<OrderItem> loadedOrder = [];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_project/provider/OrderProvider.dart';
+import 'package:mobile_project/provider/userAddNotifier.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:provider/provider.dart';
 
@@ -19,30 +20,33 @@ class OrdersScreen extends StatelessWidget {
         title: Text('Your Orders'),
       ),
       drawer: AppDrawer(),
-      body: FutureBuilder(
-        future: Provider.of<OrderProvider>(context, listen: false)
-            .fetchAndSetOrder(),
-        builder: (ctx, dataSnapshot) {
-          if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            if (dataSnapshot.error != null) {
-              // ...
-              // Do error handling stuff
-              return Center(
-                child: Text('An error occurred!'),
-              );
+      body: StreamBuilder(
+          stream: UserAddNotifer().getUser(),
+          // ignore: missing_return
+
+          builder: (context, snapShot) {
+            if (snapShot.connectionState == ConnectionState.waiting) {
+              Provider.of<OrderProvider>(context, listen: false)
+                  .fetchAndSetOrder(snapShot.data.uid);
+              ;
             } else {
-              return Consumer<OrderProvider>(
-                builder: (ctx, orderData, child) => ListView.builder(
-                  itemCount: orderData.orders.length,
-                  itemBuilder: (ctx, i) => OrderItemWidget(orderData.orders[i]),
-                ),
-              );
+              if (snapShot.error != null) {
+                // ...
+                // Do error handling stuff
+                return Center(
+                  child: Text('An error occurred!'),
+                );
+              } else {
+                return Consumer<OrderProvider>(
+                  builder: (ctx, orderData, child) => ListView.builder(
+                    itemCount: orderData.orders.length,
+                    itemBuilder: (ctx, i) =>
+                        OrderItemWidget(orderData.orders[i]),
+                  ),
+                );
+              }
             }
-          }
-        },
-      ),
+          }),
     );
   }
 }

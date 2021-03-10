@@ -3,23 +3,18 @@ import 'package:mobile_project/models/event.dart';
 import 'package:provider/provider.dart' as provider;
 import '../provider/events.dart';
 
-class EventDetailScreen extends StatelessWidget {
+class EventDetailSearch extends StatelessWidget {
   static const routeName = '/Event-detail';
   Event event;
-  EventDetailScreen();
-
+  EventDetailSearch();
+  EventDetailSearch.data(event) {
+    this.event = event;
+  }
   @override
   Widget build(BuildContext context) {
-    final eventId =
-        ModalRoute.of(context).settings.arguments as String; // is the id!
-    final loadedEvent = provider.Provider.of<Events>(
-      context,
-      listen: false,
-    ).findById(eventId);
-    print(eventId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(loadedEvent.eventName),
+        title: Text(this.event.eventName),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -28,13 +23,13 @@ class EventDetailScreen extends StatelessWidget {
               height: 300,
               width: double.infinity,
               child: Image.network(
-                loadedEvent.image,
+                this.event.image,
                 fit: BoxFit.cover,
               ),
             ),
             SizedBox(height: 10),
             Text(
-              '\$${loadedEvent.minimumCharge}',
+              '\$${this.event.minimumCharge}',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 20,
@@ -47,7 +42,7 @@ class EventDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedEvent.address,
+                this.event.address,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
@@ -59,7 +54,7 @@ class EventDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedEvent.limitAttending.toString(),
+                this.event.limitAttending.toString(),
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),
@@ -71,7 +66,7 @@ class EventDetailScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                loadedEvent.date,
+                this.event.date,
                 textAlign: TextAlign.center,
                 softWrap: true,
               ),

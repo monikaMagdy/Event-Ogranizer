@@ -26,10 +26,10 @@ dependencies:
   cloud_firestore: ^0.16.0
   cupertino_icons: ^1.0.0
   custom_navigator: ^0.2.0
-  firebase: ^8.0.0
-  firebase_auth: ^0.20.0+1
-  firebase_core: ^0.7.0
-  firebase_messaging: ^6.0.9
+  firebase: any
+  firebase_auth: any
+  firebase_core: any
+  firebase_messaging: any
   flutter_local_notifications: ^4.0.1+2
   google_maps_flutter: ^1.0.3
   http: ^0.12.0+1
@@ -47,6 +47,9 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.10.0
   pedantic: ^1.9.0
+  flutter_driver:
+    sdk: flutter
+  test: any
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

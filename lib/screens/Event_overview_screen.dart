@@ -211,6 +211,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:mobile_project/provider/events.dart';
+import 'package:mobile_project/screens/searchScreen.dart';
 import 'package:mobile_project/screens/user_events_screen.dart';
 
 import 'package:provider/provider.dart' as provider;
@@ -220,7 +221,6 @@ import 'package:mobile_project/screens/cart_screen.dart';
 import 'package:mobile_project/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_project/widgets/event_grid.dart';
-
 import 'edit_event_screen.dart';
 
 class ButtonMenu extends StatefulWidget {
@@ -233,6 +233,7 @@ class _ButtonMenuState extends State<ButtonMenu> {
     EventsOverviewScreen(),
     EditEventScreen(),
     UserEventsScreen(),
+    ListViewSearch()
     //AuthService().signOut();
   ];
   int _currentIndex = 0;

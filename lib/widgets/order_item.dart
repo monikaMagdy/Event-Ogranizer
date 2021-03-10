@@ -27,8 +27,7 @@ class _OrderItemState extends State<OrderItemWidget> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text(
-                '\$${widget.order.amount} ${Provider.of<OrderProvider>(context, listen: false).userID.substring(0, 5)}'),
+            title: Text('\$${widget.order.amount}'),
             subtitle: Text(
               DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
             ),
