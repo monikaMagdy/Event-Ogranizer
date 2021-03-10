@@ -21,8 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context, MaterialPageRoute(builder: (_) => ButtonMenu()));
       } else {
         // Go to login page
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => SignUpForm()));
+        Navigator.push(context, MaterialPageRoute(builder: (_) => LoginForm()));
       }
     });
   }
